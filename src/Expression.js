@@ -1,9 +1,9 @@
 import debug from 'debug';
 import fetch from 'isomorphic-unfetch';
-import { v5 as uuidv5, NIL } from 'uuid';
 import { TagLiteral } from '.';
 
 import { APP_NAME } from './Common/Constant';
+import { getHashUID } from './Util';
 import { IllegalArgumentsError } from './Error';
 import { Element } from './Rule';
 
@@ -108,7 +108,7 @@ export class Expression {
 
   hashUID(dicomEdit, arg) {
     log('Running hashUID');
-    return uuidv5(arg, NIL);
+    return getHashUID(arg);
   }
 
   ismatch(dicomEdit, value, pattern) {
