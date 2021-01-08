@@ -10,7 +10,7 @@
     "clean:dist": "shx rm -rf dist",
     "clean:docs": "shx rm -rf docs",
     "doc:generate": "yarn clean:docs && jsdoc -c jsdoc.conf.js",
-    "webpack": "yarn clean:dist && yarn webpack:prod && yarn webpack:dev",
+    "webpack": "yarn clean:dist && yarn webpack:dev && yarn webpack:prod",
     "webpack:dev": "webpack --progress --config ./config/webpack/webpack-dev.js",
     "webpack:prod": "webpack --progress --config ./config/webpack/webpack-prod.js",
     "webpack:watch": "webpack --progress --watch  --config ./config/webpack",
@@ -40,14 +40,14 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "@messageformat/core": "^3.0.0-beta.3",
+    "big-integer": "^1.6.48",
     "dcmjs": "^0.17.0",
     "debug": "^4.3.1",
     "isomorphic-unfetch": "^3.1.0",
     "lodash.clonedeep": "^4.5.0",
     "pegjs": "^0.10.0",
     "pegjs-backtrace": "^0.2.0",
-    "uuid": "^8.3.2"
+    "uuid": "https://github.com/WoonchanCho/uuid"
   },
   "sideEffects": false
 }

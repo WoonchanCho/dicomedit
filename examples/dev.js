@@ -1,6 +1,4 @@
 import fs from 'fs';
-import MessageFormat from '@messageformat/core';
-import { v5 as uuidv5, NIL } from 'uuid';
 import Anonymizer, {
   RuleGroup,
   Rule,
@@ -13,10 +11,10 @@ import Anonymizer, {
   ELEMENT_TYPES,
   EXPRESSION_FUNCTIONS,
   TagLiteral,
-} from './index';
-import { getDefaultVr } from './Util';
+  Parser,
+} from '../dist/node/dicomedit.js';
+
 import peg from 'pegjs';
-import Parser from './Parser';
 
 const ruleGroup2 = RuleGroup.fromObject({
   rules: [
@@ -247,8 +245,9 @@ const script = `Version 6.3
 // describe visurl hidden
 // default_series_description := "ds"
 // (0020,0011) = "99" ? (0008,103E) := "Series Two" : (0008,103E) := default_series_description
-(0008,0050) !~ "[1-5]" ? aaa :=2 : -(0020,0008)
-shiftDateTimeSequenceByIncrement[ "1220400", "(5200,9230)/(0020,9111)/(0018,9151)"]
+// (0008,0050) !~ "[1-5]" ? aaa :=2 : -(0020,0008)
+// shiftDateTimeSequenceByIncrement[ "1220400", "(5200,9230)/(0020,9111)/(0018,9151)"]
+(0008,0018) := hashUID['aaa']
 `;
 
 // const script = `Version 6.3
@@ -288,13 +287,13 @@ shiftDateTimeSequenceByIncrement[ "1220400", "(5200,9230)/(0020,9111)/(0018,9151
     // console.log('result', anonymizer.ruleResult.results);
     // const buffer = anonymizer.write();
     // fs.writeFileSync('/Users/woonchan/Desktop/res.dcm', new Uint8Array(buffer));
-    const parser = Parser.generateParserFromFile('./Peg/Grammar.peg');
+    const parser = Parser.generateParser();
     const ruleGroup3 = parser.parse(script, { trace: true });
     // console.log(ruleGroup3.rules[2]);
 
     const anonymizer = new Anonymizer(
       ruleGroup3,
-      { chany: 'aaa' },
+      { chany: 'aaa22' },
       { 'pid/NOID': 'fsdafsd' }
     );
     const filename = process.argv[2] || '/Users/woonchan/Desktop/res1.dcm';
