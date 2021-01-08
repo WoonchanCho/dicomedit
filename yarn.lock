@@ -1644,6 +1644,11 @@ detect-node@^2.0.4:
   resolved "https://registry.yarnpkg.com/detect-node/-/detect-node-2.0.4.tgz#014ee8f8f669c5c58023da64b8179c083a28c46c"
   integrity sha512-ZIzRpLJrOj7jjP2miAtgqIfmzbxa4ZOr5jJc601zklsfEx9oTzmmj2nVpIPRpNlRTIh8lc1kyViIY7BWSGNmKw==
 
+dicomedit-uuid@^8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/dicomedit-uuid/-/dicomedit-uuid-8.3.2.tgz#5ccb340ddd1b6db37ae27caf635b3237f15d7bca"
+  integrity sha512-45aYYHOHY6gQEKrO/DnOgAWeo8Mvy1GdUO2DhHbBpA+Qm9WQ4wfqAxilIpSsgT5V3NbrVZwJ+nFWGtdehFFCJA==
+
 dir-glob@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/dir-glob/-/dir-glob-3.0.1.tgz#56dbf73d992a4a93ba1584f4534063fd2e41717f"
@@ -5655,10 +5660,6 @@ uuid@^3.3.2, uuid@^3.4.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.4.0.tgz#b23e4358afa8a202fe7a100af1f5f883f02007ee"
   integrity sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==
-
-"uuid@https://github.com/WoonchanCho/uuid":
-  version "8.3.2-a"
-  resolved "https://github.com/WoonchanCho/uuid#5f13c3646a98f454a4b118ad35b1da8f9de5feca"
 
 v8-compile-cache@^2.0.3, v8-compile-cache@^2.2.0:
   version "2.2.0"

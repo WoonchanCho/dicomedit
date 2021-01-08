@@ -1,4 +1,4 @@
-/*! dicomedit - 0.0.3 - 2021-01-08 | (c) 2020 Woonchan Cho | http://github.com */
+/*! delchany - 0.0.3 - 2021-01-08 | (c) 2020 Woonchan Cho | http://github.com */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory(require(""));
@@ -30976,7 +30976,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_fs__;
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => "2c9e4d134ea58448b5ea"
+/******/ 		__webpack_require__.h = () => "3353eb8486b20b3cea00"
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */
@@ -31936,6 +31936,6 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_fs__;
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__("./index.js");
 /******/ })()
-;
+.default;
 });
 //# sourceMappingURL=dicomedit.js.map

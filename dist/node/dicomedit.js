@@ -1,4 +1,4 @@
-/*! dicomedit - 0.0.3 - 2021-01-08 | (c) 2020 Woonchan Cho | http://github.com */
+/*! delchany - 0.0.3 - 2021-01-08 | (c) 2020 Woonchan Cho | http://github.com */
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
 		module.exports = factory();
@@ -33121,6 +33121,6 @@ module.exports = require("zlib");;
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__("./index.js");
 /******/ })()
-;
+.default;
 });
 //# sourceMappingURL=dicomedit.js.map

@@ -14,7 +14,7 @@ module.exports = {
     filename: '[name].js',
     library: 'DicomEdit',
     libraryTarget: 'umd',
-    // libraryExport: 'default',
+    libraryExport: 'default',
     globalObject: 'this',
     path: outputPath,
     //umdNamedDefine: true,

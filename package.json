@@ -1,6 +1,6 @@
 {
-  "name": "dicomedit",
-  "version": "0.0.3",
+  "name": "delchany",
+  "version": "0.0.4",
   "main": "dist/web/dicomedit.min.js",
   "license": "MIT",
   "homepage": "http://github.com",
@@ -14,7 +14,7 @@
     "webpack:dev": "webpack --progress --config ./config/webpack/webpack-dev.js",
     "webpack:prod": "webpack --progress --config ./config/webpack/webpack-prod.js",
     "webpack:watch": "webpack --progress --watch  --config ./config/webpack",
-    "release": "yarn webpack && release-it"
+    "release": "release-it"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -43,11 +43,11 @@
     "big-integer": "^1.6.48",
     "dcmjs": "^0.17.0",
     "debug": "^4.3.1",
+    "dicomedit-uuid": "^8.3.2",
     "isomorphic-unfetch": "^3.1.0",
     "lodash.clonedeep": "^4.5.0",
     "pegjs": "^0.10.0",
-    "pegjs-backtrace": "^0.2.0",
-    "uuid": "https://github.com/WoonchanCho/uuid"
+    "pegjs-backtrace": "^0.2.0"
   },
   "sideEffects": false
 }
