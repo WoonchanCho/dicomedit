@@ -1,6 +1,6 @@
 {
-  "name": "delchany",
-  "version": "0.0.4",
+  "name": "dicomedit",
+  "version": "0.0.7",
   "main": "dist/web/dicomedit.min.js",
   "license": "MIT",
   "homepage": "http://github.com",

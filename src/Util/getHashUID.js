@@ -1,4 +1,4 @@
-import { v5 as uuidv5 } from 'uuid';
+import { v5 as uuidv5 } from 'dicomedit-uuid';
 import bigInt from 'big-integer';
 
 const UUID_ROOT = '2.25';

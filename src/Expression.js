@@ -31,6 +31,7 @@ export const EXPRESSION_FUNCTIONS = {
   removeAllPrivateTags: 'removeAllPrivateTags',
   echo: 'echo',
   describe: 'describe',
+  alterPixels: 'alterPixels',
 };
 
 export class Expression {
@@ -58,7 +59,7 @@ export class Expression {
     );
   }
 
-  async evaluate(dicomEdit) {
+  async evaluate(anonymizer) {
     const { funcName, args } = this;
     if (!EXPRESSION_FUNCTIONS[funcName] || !this[funcName]) {
       throw new IllegalArgumentsError(
@@ -68,9 +69,9 @@ export class Expression {
 
     const argsPromises = args.map(async (arg) => {
       if (arg instanceof Expression) {
-        return arg.evaluate(dicomEdit);
+        return arg.evaluate(anonymizer);
       } else if (arg instanceof Element) {
-        return dicomEdit.resolveElementValue(arg);
+        return anonymizer.resolveElementValue(arg);
       } else {
         return arg;
       }
@@ -78,17 +79,17 @@ export class Expression {
 
     return this[funcName].call(
       this,
-      dicomEdit,
+      anonymizer,
       ...(await Promise.all(argsPromises))
     );
   }
 
-  concatenate(dicomEdit, ...args) {
+  concatenate(anonymizer, ...args) {
     log('Running concatenate');
     return args.join('');
   }
 
-  format(dicomEdit, formatString, ...formatArgs) {
+  format(anonymizer, formatString, ...formatArgs) {
     // if (args.length === 1 && args[0] !== null && typeof args[0] === 'object') {
     //   args = args[0];
     // }
@@ -99,47 +100,47 @@ export class Expression {
     });
   }
 
-  async getURL(dicomEdit, url, key = undefined) {
+  async getURL(anonymizer, url, key = undefined) {
     // const key = args.length > 1 ? args[1] : undefined;
     const response = await fetch(url);
     const json = await response.json();
     return key ? json[key] : json;
   }
 
-  hashUID(dicomEdit, arg) {
+  hashUID(anonymizer, arg) {
     log('Running hashUID');
     return getHashUID(arg);
   }
 
-  ismatch(dicomEdit, value, pattern) {
+  ismatch(anonymizer, value, pattern) {
     log('Running ismatch');
     const regex = new RegExp(pattern);
     return regex.test(value);
   }
 
-  replace(dicomEdit, arg, target, replacement) {
+  replace(anonymizer, arg, target, replacement) {
     log('Running replace');
     const str = Array.isArray(arg) ? arg.join('') : arg;
     return str.replace(new RegExp(target, 'g'), replacement);
   }
 
-  lowercase(dicomEdit, arg) {
+  lowercase(anonymizer, arg) {
     log('Running lowercase');
     return arg.toLowerCase();
   }
 
-  substring(dicomEdit, arg, beg, end) {
+  substring(anonymizer, arg, beg, end) {
     log('Running substring');
     const str = Array.isArray(arg) ? arg.join('') : arg;
     return str.substring(beg, end);
   }
 
-  set(dicomEdit, tagName, value) {
+  set(anonymizer, tagName, value) {
     log('Running set');
-    dicomEdit._setTag(dicomEdit.outputDict, tagName, value);
+    anonymizer._setTag(anonymizer.outputDict, tagName, value);
   }
 
-  shiftDateByIncrement(dicomEdit, arg, days) {
+  shiftDateByIncrement(anonymizer, arg, days) {
     log('Running shiftDateByIncrement');
     const dateString = Array.isArray(arg) ? arg[0] : arg;
     const dt = new Date(
@@ -153,50 +154,50 @@ export class Expression {
   }
 
   // eslint-disable-next-line no-unused-vars
-  shiftDateTimeByIncrement(dicomEdit, arg, days) {
+  shiftDateTimeByIncrement(anonymizer, arg, days) {
     log('Running shiftDateTimeByIncrement');
   }
 
   // eslint-disable-next-line no-unused-vars
-  shiftDateTimeSequenceByIncrement(dicomEdit, second, tagPath) {
+  shiftDateTimeSequenceByIncrement(anonymizer, second, tagPath) {
     log('shiftDateTimeSequenceByIncrement');
   }
 
-  uppercase(dicomEdit, arg) {
+  uppercase(anonymizer, arg) {
     log('Running uppercase');
     return arg.toUpperCase();
   }
 
-  removeAllPrivateTags(dicomEdit) {
+  removeAllPrivateTags(anonymizer) {
     log('Removing all the private tags');
 
-    const { privateTagMap } = dicomEdit;
+    const { privateTagMap } = anonymizer;
     Object.keys(privateTagMap).forEach((tagName) => {
       const privateHeaderTag = privateTagMap[tagName];
-      const memberTagNames = dicomEdit.getMembersTagNamesOf(privateHeaderTag);
+      const memberTagNames = anonymizer.getMembersTagNamesOf(privateHeaderTag);
       memberTagNames.forEach((memberTagName) => {
-        dicomEdit.deleteTag(dicomEdit.outputDict, memberTagName);
+        anonymizer.deleteTag(anonymizer.outputDict, memberTagName);
       });
-      //dicomEdit.deleteTag(dicomEdit.outputDict, privateHeaderTag.rawTagName);
+      //anonymizer.deleteTag(anonymizer.outputDict, privateHeaderTag.rawTagName);
     });
   }
 
-  echo(dicomEdit, ...args) {
+  echo(anonymizer, ...args) {
     log('Echoing');
     console.log(args.join(' '));
   }
 
-  lookup(dicomEdit, key1, key2) {
+  lookup(anonymizer, key1, key2) {
     const key = `${key1}/${key2}`;
     log(`Looking up the key ${key} in the lookup table`);
-    const { lookupMap } = dicomEdit;
+    const { lookupMap } = anonymizer;
     const val = lookupMap[key];
     return val ? val : null;
   }
 
-  retainPrivateTags(dicomEdit, ...args) {
+  retainPrivateTags(anonymizer, ...args) {
     log('Retaining private tags');
-    const { privateTagMap, outputDict } = dicomEdit;
+    const { privateTagMap, outputDict } = anonymizer;
     const regExps = args
       .map((privateTag) => {
         try {
@@ -219,7 +220,13 @@ export class Expression {
   }
 
   // eslint-disable-next-line no-unused-vars
-  describe(dicomEdit, ...args) {
+  describe(anonymizer, ...args) {
     log('Skipping describe - not implemented yet');
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  alterPixels(anonymizer, shape, shapeParams, fillPattern, fillPatternParams) {
+    log(shape, shapeParams, fillPattern, fillPatternParams);
+    log('Skipping alterPixels - not implemented yet');
   }
 }

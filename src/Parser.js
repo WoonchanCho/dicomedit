@@ -1,7 +1,7 @@
 import peg from 'pegjs';
 import Tracer from 'pegjs-backtrace';
 import debug from 'debug';
-import fs from 'fs';
+// import fs from 'fs';
 
 import {
   APP_NAME,
@@ -27,16 +27,16 @@ export default class Parser {
     return defaultParser.parse(script);
   }
 
-  static generateParserFromFile(
-    filename = undefined,
-    options = { trace: false }
-  ) {
-    const grammar = filename
-      ? fs.readFileSync(filename, 'utf8')
-      : DEFAULT_GRAMMAR;
+  //   static generateParserFromFile(
+  //     filename = undefined,
+  //     options = { trace: false }
+  //   ) {
+  //     const grammar = filename
+  //       ? fs.readFileSync(filename, 'utf8')
+  //       : DEFAULT_GRAMMAR;
 
-    return Parser.generateParser(grammar, { trace: options.trace });
-  }
+  //     return Parser.generateParser(grammar, { trace: options.trace });
+  //   }
 
   static generateParser(grammar = undefined, options = { trace: false }) {
     return new Parser(

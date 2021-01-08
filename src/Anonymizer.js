@@ -1,6 +1,6 @@
 import dcmjs from 'dcmjs';
 import debug from 'debug';
-import fs from 'fs';
+// import fs from 'fs';
 
 import { APP_NAME, RULE_RESULT_STATUSES, TAG_TYPES } from './Common/Constant';
 import {
@@ -14,7 +14,7 @@ import {
   IllegalArgumentsError,
   NotFoundError,
   RuleError,
-  EnvironmentError,
+  //   EnvironmentError,
   DicomWriteError,
 } from './Error';
 import { CONDITION_TYPES, ELEMENT_TYPES, STATEMENT_TYPES } from './Rule';
@@ -34,22 +34,26 @@ export default class Anonymizer {
   /**
    *
    * Creates a Anonymizer object.
-   * @param {string|RuleGroup} input - script or ruleGroup object
+   * @param {string|RuleGroup} scriptOrRuleGroup - script or ruleGroup object
    * @param {Object} [identifiers={}] - Initial identifiers
    * @param {ArrayBuffer|Buffer}  [inputBuffer=undefined] - Once inputBuffer provided, loads the image buffer during the object construction.
    */
   constructor(
-    input,
+    scriptOrRuleGroup,
     identifiers = {},
     lookupMap = {},
-    inputBuffer = undefined
+    inputBuffer = undefined,
+    options = { namespaceforHashUID: '' }
   ) {
-    if (!input) {
+    if (!scriptOrRuleGroup) {
       throw new IllegalArgumentsError(
         'DicomEdit script or the rule group definition is required'
       );
     }
-    this.ruleGroup = input instanceof RuleGroup ? input : Parser.parse(input);
+    this.ruleGroup =
+      scriptOrRuleGroup instanceof RuleGroup
+        ? scriptOrRuleGroup
+        : Parser.parse(scriptOrRuleGroup);
     this.initialIdentifiers = identifiers || {};
     Object.keys(this.initialIdentifiers).forEach((identifier) => {
       if (!validateIdentifierConvention(identifier)) {
@@ -62,6 +66,8 @@ export default class Anonymizer {
     if (inputBuffer) {
       this.loadDcm(inputBuffer);
     }
+    this.namespaceforHashUID =
+      options && options.namespaceforHashUID ? options.namespaceforHashUID : '';
   }
 
   /**
@@ -100,15 +106,15 @@ export default class Anonymizer {
     this.constructPrivateTagMap();
   }
 
-  loadDcmUsingFileName(filename) {
-    if (!process) {
-      throw new EnvironmentError(
-        'This function is supported only on the Node.JS environment'
-      );
-    }
-    const arrayBuffer = fs.readFileSync(filename);
-    this.loadDcm(arrayBuffer);
-  }
+  //   loadDcmUsingFileName(filename) {
+  //     if (!process) {
+  //       throw new EnvironmentError(
+  //         'This function is supported only on the Node.JS environment'
+  //       );
+  //     }
+  //     const arrayBuffer = fs.readFileSync(filename);
+  //     this.loadDcm(arrayBuffer);
+  //   }
 
   constructPrivateTagMap() {
     log('Constructing Private Tag Map');

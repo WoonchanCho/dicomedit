@@ -3,18 +3,13 @@ import Anonymizer, {
   RuleGroup,
   Rule,
   Statement,
-  Condition,
   Element,
   Expression,
   STATEMENT_TYPES,
-  CONDITION_TYPES,
   ELEMENT_TYPES,
   EXPRESSION_FUNCTIONS,
-  TagLiteral,
   Parser,
 } from '../dist/node/dicomedit.js';
-
-import peg from 'pegjs';
 
 const ruleGroup2 = RuleGroup.fromObject({
   rules: [
@@ -230,6 +225,7 @@ const ruleGroup = new RuleGroup('6.3', [
   ),
 ]);
 
+ruleGroup && ruleGroup2;
 const script = `Version 6.3
 // (0019,0010) := 'HOLOGIC, Inc.'
 // - (0019,{HOLOGIC, Inc.}X@)/(0001,0022)
@@ -247,7 +243,9 @@ const script = `Version 6.3
 // (0020,0011) = "99" ? (0008,103E) := "Series Two" : (0008,103E) := default_series_description
 // (0008,0050) !~ "[1-5]" ? aaa :=2 : -(0020,0008)
 // shiftDateTimeSequenceByIncrement[ "1220400", "(5200,9230)/(0020,9111)/(0018,9151)"]
-(0008,0018) := hashUID['aaa']
+// (0008,0018) := hashUID['aaa']
+// (0008,002A) := shiftDateTimeByIncrement[ (0008,002A), "1220400"]
+alterPixels["rectangle", "l=100, t=100, r=200, b=200", "solid", "v=100"]
 `;
 
 // const script = `Version 6.3
@@ -293,11 +291,13 @@ const script = `Version 6.3
 
     const anonymizer = new Anonymizer(
       ruleGroup3,
-      { chany: 'aaa22' },
-      { 'pid/NOID': 'fsdafsd' }
+      { chany: 'aaa2332' },
+      { 'pid/NOID': 'fsdafsd' },
+      undefined
     );
     const filename = process.argv[2] || '/Users/woonchan/Desktop/res1.dcm';
-    anonymizer.loadDcmUsingFileName(filename);
+    const buffer2 = fs.readFileSync(filename);
+    anonymizer.loadDcm(buffer2);
     // console.log(anonymizer.privateTagMap);
     await anonymizer.applyRules();
     // console.log('result', anonymizer.ruleResult.results);
