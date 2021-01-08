@@ -12,6 +12,7 @@ import {
 import { LexicalError, ParseError, RuleError } from './Error';
 import { Rule, RuleGroup } from './index';
 import DEFAULT_GRAMMAR from '!!raw-loader!./Peg/Grammar.peg';
+// const DEFAULT_GRAMMAR = fs.readFileSync('./Peg/Grammar.peg');
 
 const log = debug(`${APP_NAME}:Parser`);
 const PARSER_TYPE = 'DicomEdit';

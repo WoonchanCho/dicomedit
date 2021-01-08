@@ -772,7 +772,19 @@ ProgramVersion
     }
 
 VersionLiteral
-  = "6.0" / "6.1" / "6.2" / "6.3"
+  = head:VersionDigit tail:VersionSubDigit* {
+      return head + tail;
+  }
+
+VersionDigit
+  = digits:DecimalDigit+ {
+      return digits.join('') 
+  }
+
+VersionSubDigit
+  = "." digits:VersionDigit {
+      return '.' + digits
+  }
 
 VersionLiteralWithQuote
   = '"'literal:VersionLiteral '"' {
