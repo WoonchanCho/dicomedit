@@ -2,20 +2,11 @@ const merge = require('./merge');
 const baseConfig = require('./webpack-base');
 const TerserPlugin = require('terser-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+//   .BundleAnalyzerPlugin;
 
 const prodConfig = {
-  output: {
-    filename: '[name].min.js',
-  },
   mode: 'production',
-  optimization: {
-    minimize: true,
-    minimizer: [new TerserPlugin()],
-    usedExports: true,
-  },
-  plugins: [new CompressionPlugin()],
 };
 
 const mergedConfig = merge(baseConfig, prodConfig);
@@ -27,9 +18,14 @@ module.exports = [
       filename: 'web/[name].min.js',
     },
     externals: {
-      fs: '',
+      fs: 'fs',
     },
-    plugins: [new BundleAnalyzerPlugin()],
+    plugins: [new CompressionPlugin()],
+    optimization: {
+      minimize: true,
+      minimizer: [new TerserPlugin()],
+      usedExports: true,
+    },
   }),
   merge(mergedConfig, {
     target: 'node',

@@ -1,6 +1,6 @@
 import dcmjs from 'dcmjs';
 import debug from 'debug';
-// import fs from 'fs';
+import fs from 'fs';
 
 import { APP_NAME, RULE_RESULT_STATUSES, TAG_TYPES } from './Common/Constant';
 import {
@@ -14,7 +14,7 @@ import {
   IllegalArgumentsError,
   NotFoundError,
   RuleError,
-  //   EnvironmentError,
+  EnvironmentError,
   DicomWriteError,
 } from './Error';
 import { CONDITION_TYPES, ELEMENT_TYPES, STATEMENT_TYPES } from './Rule';
@@ -106,15 +106,15 @@ export default class Anonymizer {
     this.constructPrivateTagMap();
   }
 
-  //   loadDcmUsingFileName(filename) {
-  //     if (!process) {
-  //       throw new EnvironmentError(
-  //         'This function is supported only on the Node.JS environment'
-  //       );
-  //     }
-  //     const arrayBuffer = fs.readFileSync(filename);
-  //     this.loadDcm(arrayBuffer);
-  //   }
+  loadDcmUsingFileName(filename) {
+    if (!fs) {
+      throw new EnvironmentError(
+        'This function is supported only on the Node.JS environment'
+      );
+    }
+    const arrayBuffer = fs.readFileSync(filename);
+    this.loadDcm(arrayBuffer);
+  }
 
   constructPrivateTagMap() {
     log('Constructing Private Tag Map');

@@ -1,7 +1,7 @@
 import peg from 'pegjs';
 import Tracer from 'pegjs-backtrace';
 import debug from 'debug';
-// import fs from 'fs';
+import fs from 'fs';
 
 import {
   APP_NAME,
@@ -9,7 +9,7 @@ import {
   SUPPORTED_SCRIPT_VERSIONS,
   RULE_RESULT_STATUSES,
 } from './Common/Constant';
-import { LexicalError, ParseError, RuleError } from './Error';
+import { LexicalError, ParseError, RuleError, EnvironmentError } from './Error';
 import { Rule, RuleGroup } from './index';
 import DEFAULT_GRAMMAR from '!!raw-loader!./Peg/Grammar.peg';
 // const DEFAULT_GRAMMAR = fs.readFileSync('./Peg/Grammar.peg');
@@ -27,16 +27,22 @@ export default class Parser {
     return defaultParser.parse(script);
   }
 
-  //   static generateParserFromFile(
-  //     filename = undefined,
-  //     options = { trace: false }
-  //   ) {
-  //     const grammar = filename
-  //       ? fs.readFileSync(filename, 'utf8')
-  //       : DEFAULT_GRAMMAR;
+  static generateParserFromFile(
+    filename = undefined,
+    options = { trace: false }
+  ) {
+    if (!fs) {
+      throw new EnvironmentError(
+        'This function is supported only on the Node.JS environment'
+      );
+    }
 
-  //     return Parser.generateParser(grammar, { trace: options.trace });
-  //   }
+    const grammar = filename
+      ? fs.readFileSync(filename, 'utf8')
+      : DEFAULT_GRAMMAR;
+
+    return Parser.generateParser(grammar, { trace: options.trace });
+  }
 
   static generateParser(grammar = undefined, options = { trace: false }) {
     return new Parser(
