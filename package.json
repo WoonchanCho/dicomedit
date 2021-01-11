@@ -1,6 +1,6 @@
 {
   "name": "dicomedit",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "main": "dist/web/dicomedit.min.js",
   "license": "MIT",
   "homepage": "http://github.com",
