@@ -171,14 +171,14 @@ export class Expression {
   removeAllPrivateTags(anonymizer) {
     log('Removing all the private tags');
 
-    const { privateTagMap } = anonymizer;
-    Object.keys(privateTagMap).forEach((tagName) => {
-      const privateHeaderTag = privateTagMap[tagName];
-      const memberTagNames = anonymizer.getMembersTagNamesOf(privateHeaderTag);
-      memberTagNames.forEach((memberTagName) => {
-        anonymizer.deleteTag(anonymizer.outputDict, memberTagName);
-      });
-      //anonymizer.deleteTag(anonymizer.outputDict, privateHeaderTag.rawTagName);
+    const { outputDict } = anonymizer;
+
+    const root = outputDict.dict;
+    Object.keys(root).forEach((tagName) => {
+      if (!TagLiteral.isPrivateTagMember(tagName)) {
+        return;
+      }
+      delete root[tagName];
     });
   }
 
