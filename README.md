@@ -6,6 +6,8 @@ DicomEdit.js is a ported version the original Java-based library (https://wiki.x
 
 DicomEdit.js uses Peg.js (https://github.com/pegjs) to create a parser for the DicomEdit script. Using the parser, the incoming script is converted to the abstract syntax tree, and finally the AST is transformed into the Rule groups object. and each defined rule is sequentially applied to the DICOM object.
 
+## Demo
+This is a sample React.Js based webapp that demonstrate how the DicomEdit.js library works: https://testanonymizer.web.app.
 
 ## Install
 DicomEdit.js is available from npm or unpkg.
