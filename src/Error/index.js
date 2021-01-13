@@ -1,12 +1,42 @@
-export { default as ResponseError } from './ResponseError';
-export { default as AuthorizationError } from './AuthorizationError';
-export { default as NotFoundError } from './NotFoundError';
-export { default as BadRequestError } from './BadRequestError';
-export { default as IllegalArgumentsError } from './IllegalArgumentsError';
-export { default as ConflictError } from './ConflictError';
-export { default as UnsafeError } from './UnsafeError';
-export { default as RuleError } from './RuleError';
-export { default as EnvironmentError } from './EnvironmentError';
-export { default as LexicalError } from './LexicalError';
-export { default as ParseError } from './ParseError';
-export { default as DicomWriteError } from './DicomWriteError';
+import ResponseError from './ResponseError';
+import AuthorizationError from './AuthorizationError';
+import NotFoundError from './NotFoundError';
+import BadRequestError from './BadRequestError';
+import IllegalArgumentsError from './IllegalArgumentsError';
+import ConflictError from './ConflictError';
+import UnsafeError from './UnsafeError';
+import RuleError from './RuleError';
+import EnvironmentError from './EnvironmentError';
+import LexicalError from './LexicalError';
+import ParseError from './ParseError';
+import DicomWriteError from './DicomWriteError';
+
+export {
+  ResponseError,
+  AuthorizationError,
+  NotFoundError,
+  BadRequestError,
+  IllegalArgumentsError,
+  ConflictError,
+  UnsafeError,
+  RuleError,
+  EnvironmentError,
+  LexicalError,
+  ParseError,
+  DicomWriteError,
+};
+
+export default {
+  ResponseError,
+  AuthorizationError,
+  NotFoundError,
+  BadRequestError,
+  IllegalArgumentsError,
+  ConflictError,
+  UnsafeError,
+  RuleError,
+  EnvironmentError,
+  LexicalError,
+  ParseError,
+  DicomWriteError,
+};

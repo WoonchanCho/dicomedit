@@ -45,15 +45,26 @@ export default class Anonymizer {
     inputBuffer = undefined,
     options = { namespaceforHashUID: '' }
   ) {
+    // Validate script or ruleGroup
     if (!scriptOrRuleGroup) {
       throw new IllegalArgumentsError(
         'DicomEdit script or the rule group definition is required'
       );
     }
-    this.ruleGroup =
-      scriptOrRuleGroup instanceof RuleGroup
-        ? scriptOrRuleGroup
-        : Parser.parse(scriptOrRuleGroup);
+    if (
+      typeof scriptOrRuleGroup !== 'string' &&
+      !(scriptOrRuleGroup instanceof RuleGroup)
+    ) {
+      throw new IllegalArgumentsError(
+        'DicomEdit script or the rule group definition is required'
+      );
+    }
+
+    // Validate Identifiers
+    if (identifiers && typeof identifiers !== 'object') {
+      throw new IllegalArgumentsError('identifiers should be a type of object');
+    }
+
     this.initialIdentifiers = identifiers || {};
     Object.keys(this.initialIdentifiers).forEach((identifier) => {
       if (!validateIdentifierConvention(identifier)) {
@@ -62,7 +73,19 @@ export default class Anonymizer {
         );
       }
     });
-    this.lookupMap = lookupMap;
+
+    // Validate lookupMap
+    if (lookupMap && typeof lookupMap !== 'object') {
+      throw new IllegalArgumentsError('lookupMap should be a type of object');
+    }
+
+    this.lookupMap = lookupMap || {};
+
+    this.ruleGroup =
+      scriptOrRuleGroup instanceof RuleGroup
+        ? scriptOrRuleGroup
+        : Parser.parse(scriptOrRuleGroup);
+
     if (inputBuffer) {
       this.loadDcm(inputBuffer);
     }
@@ -85,7 +108,7 @@ export default class Anonymizer {
    * Loads a DICOM object from the input buffer.
    * @param {ArrayBuffer|Uint8Array|String} inputBuffer - InputBuffer should be a type of ArrayBuffer or Uinit8Array. (The Buffer type on Node.js is allowed because it extends Uint8Array)
    * @param {Object} [options={ignoreErrors: true}] - Specifies options to be used while loading a DICOM object
-   * @param {boolean} options.ignoreErrors - True if you want to disregard errors that happens while loading a DICOM object.
+   * @param {boolean} options.ignoreErrors - True if you want to disregard errors that happens inside dcmjs library while loading a DICOM object.
    */
   loadDcm(inputBuffer, options = { ignoreErrors: true }) {
     if (

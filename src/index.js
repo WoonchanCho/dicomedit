@@ -16,6 +16,8 @@ import Parser from './Parser';
 
 import TagLiteral from './TagLiteral';
 
+import Errors from './Error';
+
 export default Anonymizer;
 
 export {
@@ -32,4 +34,5 @@ export {
   EXPRESSION_FUNCTIONS,
   Parser,
   TagLiteral,
+  Errors,
 };
