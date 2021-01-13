@@ -1,9 +1,9 @@
 {
   "name": "dicomedit",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "main": "dist/web/dicomedit.min.js",
   "license": "MIT",
-  "homepage": "http://github.com",
+  "homepage": "https://github.com/WoonchanCho/dicomedit",
   "scripts": {
     "clean": "yarn clean:dist && yarn clean:coverage",
     "clean:coverage": "shx rm -rf coverage",
@@ -15,7 +15,7 @@
     "webpack:prod": "webpack --progress --config ./config/webpack/webpack-prod.js",
     "webpack:watch": "webpack --progress --watch  --config ./config/webpack",
     "release": "release-it",
-    "test": "mocha -r esm"
+    "test": "npx mocha"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -40,6 +40,7 @@
     "karma-mocha": "^2.0.1",
     "karma-safari-launcher": "^1.0.0",
     "mocha": "^8.2.1",
+    "mocha-loader": "^5.1.5",
     "nodemon": "^2.0.6",
     "raw-loader": "^4.0.2",
     "release-it": "^14.2.2",
