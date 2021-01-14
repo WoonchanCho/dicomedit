@@ -58,15 +58,14 @@ export default class CustomDE6ParserVisitor extends DE6ParserVisitor {
     const id = ctx.ID().getText();
     const element = this.visit(ctx.children[2]);
     log(`Set variable: name= ${id}, value= ${element}`);
-    return Rule.fromObject({
-      statement: {
-        type: 'ASSIGN',
-        operand1: { type: ELEMENT_TYPES.IDENTIFIER, value: id },
-        operand2: element,
-        options: {},
-      },
-      used: true,
-    });
+
+    return new Rule(
+      new Statement(
+        STATEMENT_TYPES.ASSIGN,
+        new Element(ELEMENT_TYPES.IDENTIFIER, id),
+        element
+      )
+    );
   }
 
   // eslint-disable-next-line no-unused-vars
@@ -90,15 +89,13 @@ export default class CustomDE6ParserVisitor extends DE6ParserVisitor {
     const lvalue = this.visit(ctx.lvalue());
     const tagPath = lvalue[0];
 
-    return Rule.fromObject({
-      statement: {
-        type: STATEMENT_TYPES.ASSIGN,
-        operand1: { type: ELEMENT_TYPES.TAG, value: tagPath },
-        operand2: assignedValue,
-        options: {},
-      },
-      used: true,
-    });
+    return new Rule(
+      new Statement(
+        STATEMENT_TYPES.ASSIGN,
+        new Element(ELEMENT_TYPES.TAG, tagPath),
+        assignedValue
+      )
+    );
   }
 
   visitAssign_if_exists(ctx) {
@@ -242,14 +239,12 @@ export default class CustomDE6ParserVisitor extends DE6ParserVisitor {
     const lvalue = this.visit(ctx.lvalue());
     const tagPath = lvalue[0];
 
-    return Rule.fromObject({
-      statement: {
-        type: STATEMENT_TYPES.DELETE,
-        operand1: { type: ELEMENT_TYPES.IDENTIFIER, value: tagPath },
-        options: {},
-      },
-      used: true,
-    });
+    return new Rule(
+      new Statement(
+        STATEMENT_TYPES.DELETE,
+        new Element(ELEMENT_TYPES.TAG, tagPath)
+      )
+    );
   }
 
   visitRemoveAllPrivateTags() {

@@ -226,8 +226,9 @@ const ruleGroup = new RuleGroup('6.3', [
 ]);
 
 ruleGroup && ruleGroup2;
-const script = `Version 6.3
-// (0019,0010) := 'HOLOGIC, Inc.'
+const script = `version "6.3"
+- (0008,0008)
+// (0008,0008) := "HOLOGIC, Inc."
 // - (0019,{HOLOGIC, Inc.}X@)/(0001,0022)
 // - (0020,9222)/(0020,XXX#)
 // (0001,0022) := 'FAST'
@@ -245,7 +246,7 @@ const script = `Version 6.3
 // shiftDateTimeSequenceByIncrement[ "1220400", "(5200,9230)/(0020,9111)/(0018,9151)"]
 // (0008,0018) := hashUID['aaa']
 // (0008,002A) := shiftDateTimeByIncrement[ (0008,002A), "1220400"]
-alterPixels["rectangle", "l=100, t=100, r=200, b=200", "solid", "v=100"]
+// alterPixels["rectangle", "l=100, t=100, r=200, b=200", "solid", "v=100"]
 `;
 
 // const script = `Version 6.3
@@ -287,7 +288,7 @@ alterPixels["rectangle", "l=100, t=100, r=200, b=200", "solid", "v=100"]
     // fs.writeFileSync('/Users/woonchan/Desktop/res.dcm', new Uint8Array(buffer));
     const parser = Parser.generateParser();
     const ruleGroup3 = parser.parse(script, { trace: true });
-    // console.log(ruleGroup3.rules[2]);
+    console.log(ruleGroup3.rules[0]);
 
     const anonymizer = new Anonymizer(
       ruleGroup3,
