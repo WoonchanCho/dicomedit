@@ -107,6 +107,7 @@ export default class Anonymizer {
     }
     this.namespaceforHashUID =
       options && options.namespaceforHashUID ? options.namespaceforHashUID : '';
+    this.parserLibrary = parserLibrary;
   }
 
   /**
