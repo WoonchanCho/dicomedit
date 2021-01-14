@@ -1,15 +1,17 @@
 const fs = require('fs');
 const { Anonymizer } = require('../dist/node/dicomedit.min');
 
-const script = `Version 6.3
-temp := 'chany'
-(0008,0008) := 'test'
+const script = `version "6.3"
+temp := "chany"
+(0008,0008) := "test"
 (0010,0010) := temp
 `;
 
 (async () => {
   try {
-    const anonymizer = new Anonymizer(script, { test: 'hello' });
+    const anonymizer = new Anonymizer(script, {
+      identifiers: { test: 'hello' },
+    });
 
     const inputFile = process.argv[2] || './sample.dcm';
     anonymizer.loadDcmUsingFileName(inputFile);

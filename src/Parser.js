@@ -1,65 +1,88 @@
+// import fs from 'fs';
+import debug from 'debug';
 import peg from 'pegjs';
 import Tracer from 'pegjs-backtrace';
-import debug from 'debug';
-import fs from 'fs';
+import antlr4 from 'antlr4';
 
 import {
   APP_NAME,
   DEFAULT_SCRIPT_VERSION,
   SUPPORTED_SCRIPT_VERSIONS,
   RULE_RESULT_STATUSES,
+  DEFAULT_PARSER_LIBRARY,
+  PARSER_LIBRARIES,
 } from './Common/Constant';
-import { LexicalError, ParseError, RuleError, EnvironmentError } from './Error';
+import { LexicalError, ParseError, RuleError } from './Error';
 import { Rule, RuleGroup } from './index';
-import DEFAULT_GRAMMAR from '!!raw-loader!./Peg/Grammar.peg';
-// const DEFAULT_GRAMMAR = fs.readFileSync('./Peg/Grammar.peg');
+import DEFAULT_PEG_GRAMMAR from '!!raw-loader!./Peg/Grammar.peg';
+// const DEFAULT_PEG_GRAMMAR = fs.readFileSync('./Peg/Grammar.peg', 'utf8');
+// const DEFAULT_PEG_GRAMMAR = '';
+
+import DE6Lexer from './Antlr/lib/DE6Lexer.js';
+import DE6Parser from './Antlr/lib/DE6Parser.js';
+import CustomDE6ParserVisitor from './Antlr/CustomDE6ParserVisitor';
 
 const log = debug(`${APP_NAME}:Parser`);
 const PARSER_TYPE = 'DicomEdit';
 
 export default class Parser {
-  constructor(rawParser) {
-    this.rawParser = rawParser;
+  constructor(
+    options = { trace: false, parserLibrary: DEFAULT_PARSER_LIBRARY }
+  ) {
+    if (options && options.parserLibrary === PARSER_LIBRARIES.PEGJS) {
+      this.parserLibrary = PARSER_LIBRARIES.PEGJS;
+      this.rawParser = peg.generate(DEFAULT_PEG_GRAMMAR, {
+        trace: options.trace,
+      });
+    } else {
+      this.parserLibrary = PARSER_LIBRARIES.ANTLR4;
+    }
   }
 
-  static parse(script) {
-    const defaultParser = Parser.generateParser();
+  static parse(
+    script,
+    options = { trace: false, parserLibrary: DEFAULT_PARSER_LIBRARY }
+  ) {
+    const defaultParser = Parser.generateParser(options);
     return defaultParser.parse(script);
   }
 
-  static generateParserFromFile(
-    filename = undefined,
-    options = { trace: false }
+  static generateParser(
+    options = { trace: false, parserLibrary: DEFAULT_PARSER_LIBRARY }
   ) {
-    if (!fs) {
-      throw new EnvironmentError(
-        'This function is supported only on the Node.JS environment'
-      );
-    }
-
-    const grammar = filename
-      ? fs.readFileSync(filename, 'utf8')
-      : DEFAULT_GRAMMAR;
-
-    return Parser.generateParser(grammar, { trace: options.trace });
-  }
-
-  static generateParser(grammar = undefined, options = { trace: false }) {
-    return new Parser(
-      peg.generate(grammar ? grammar : DEFAULT_GRAMMAR, {
-        trace: options.trace,
-      })
-    );
+    return new Parser(options);
   }
 
   parse(script, options = {}) {
-    const ast = this.produceAbstractSyntaxTree(script, options);
-    const final = this.produceRuleGroup(ast);
-
-    return final;
+    if (this.parserLibrary === PARSER_LIBRARIES.PEGJS) {
+      log(`Parsing with ${PARSER_LIBRARIES.PEGJS}`);
+      return this.parsePeg(script, options);
+    } else {
+      log(`Parsing with ${PARSER_LIBRARIES.ANTLR4}`);
+      return this.parseAntlr(script);
+    }
   }
 
-  produceAbstractSyntaxTree(script, options = {}) {
+  parsePeg(script, options = {}) {
+    const ast = this.produceAbstractSyntaxTreeFromPeg(script, options);
+    return this.produceRuleGroup(ast);
+  }
+
+  parseAntlr(script) {
+    const chars = new antlr4.InputStream(script);
+    const lexer = new DE6Lexer(chars);
+    const tokens = new antlr4.CommonTokenStream(lexer);
+    const parser = new DE6Parser(tokens);
+    parser.buildParseTrees = true;
+
+    const visitor = new CustomDE6ParserVisitor();
+    const tree = parser.script();
+    visitor.visitScript(tree);
+
+    return visitor.ruleGroup;
+  }
+
+  produceAbstractSyntaxTreeFromPeg(script, options = {}) {
     log('Producing Abstract Syntax Tree');
     const { trace } = options;
     let parserOptions = {};

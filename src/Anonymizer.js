@@ -2,7 +2,12 @@ import dcmjs from 'dcmjs';
 import debug from 'debug';
 import fs from 'fs';
 
-import { APP_NAME, RULE_RESULT_STATUSES, TAG_TYPES } from './Common/Constant';
+import {
+  APP_NAME,
+  RULE_RESULT_STATUSES,
+  TAG_TYPES,
+  DEFAULT_PARSER_LIBRARY,
+} from './Common/Constant';
 import {
   cloneDeep,
   arraysEqual,
@@ -40,11 +45,22 @@ export default class Anonymizer {
    */
   constructor(
     scriptOrRuleGroup,
-    identifiers = {},
-    lookupMap = {},
-    inputBuffer = undefined,
-    options = { namespaceforHashUID: '' }
+    options = {
+      identifiers: {},
+      lookupMap: {},
+      inputBuffer: undefined,
+      namespaceforHashUID: '',
+      trace: false,
+      parserLibrary: DEFAULT_PARSER_LIBRARY,
+    }
   ) {
+    const {
+      identifiers,
+      lookupMap,
+      inputBuffer,
+      trace,
+      parserLibrary,
+    } = options;
     // Validate script or ruleGroup
     if (!scriptOrRuleGroup) {
       throw new IllegalArgumentsError(
@@ -84,7 +100,7 @@ export default class Anonymizer {
     this.ruleGroup =
       scriptOrRuleGroup instanceof RuleGroup
         ? scriptOrRuleGroup
-        : Parser.parse(scriptOrRuleGroup);
+        : Parser.parse(scriptOrRuleGroup, { trace, parserLibrary });
 
     if (inputBuffer) {
       this.loadDcm(inputBuffer);

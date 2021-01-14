@@ -375,7 +375,7 @@ NullToken       = "null"       !IdentifierPart
 SetToken        = "set"        !IdentifierPart
 TrueToken       = "true"       !IdentifierPart
 VarToken        = "var"        !IdentifierPart
-VersionToken    = "Version"    !IdentifierPart
+VersionToken    = "version"    !IdentifierPart
 DescribeToken   = "describe"   !IdentifierPart
 RemoveAllPrivateTagsToken    
                 = "removeAllPrivateTags"

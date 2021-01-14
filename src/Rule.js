@@ -18,7 +18,7 @@ const log = debug(`${APP_NAME}:Rule`);
  * Class representing a group of rules. Includes a DicomEdit script version info.
  */
 export class RuleGroup {
-  constructor(version, rules) {
+  constructor(version = DEFAULT_SCRIPT_VERSION, rules = []) {
     this.version = version;
     if (!rules) {
       rules = [];
@@ -326,10 +326,10 @@ export class Statement {
 }
 
 export const CONDITION_TYPES = {
-  EQUAL: 'EQUAL',
-  NOT_EQUAL: 'NOT_EQUAL',
-  MATCH: 'MATCH',
-  NOT_MATCH: 'NOT_MATCH',
+  EQUAL: '=',
+  NOT_EQUAL: '!=',
+  MATCH: '~',
+  NOT_MATCH: '!~',
 };
 
 /**
@@ -483,5 +483,9 @@ export class Element {
           `${unit.name}${unit.index !== null ? '[' + unit.index + ']' : ''}`
       )
       .join('/');
+  }
+
+  toString() {
+    return `Element [type=${this.type}, value=${this.value}]`;
   }
 }

@@ -23,7 +23,15 @@ module.exports = [
     plugins: [new CompressionPlugin()],
     optimization: {
       minimize: true,
-      minimizer: [new TerserPlugin()],
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            output: {
+              ascii_only: true,
+            },
+          },
+        }),
+      ],
       usedExports: true,
     },
   }),

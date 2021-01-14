@@ -2,6 +2,12 @@ export const APP_NAME = 'DicomEditJS';
 export const DEFAULT_SCRIPT_VERSION = '6.3';
 export const SUPPORTED_SCRIPT_VERSIONS = ['6.0', '6.1', '6.2', '6.3'];
 
+export const PARSER_LIBRARIES = {
+  PEGJS: 'PEGJS',
+  ANTLR4: 'ANTLR4',
+};
+export const DEFAULT_PARSER_LIBRARY = PARSER_LIBRARIES.ANTLR4;
+
 export const LEXICAL_STATEMENT_TYPES = {
   ConditionalStatement: 'ConditionalStatement',
   EchoStatement: 'EchoStatement',

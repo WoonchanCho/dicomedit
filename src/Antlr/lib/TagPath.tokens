@@ -1,0 +1,15 @@
+T__0=1
+T__1=2
+T__2=3
+T__3=4
+LEFT_BRACKET=5
+RIGHT_BRACKET=6
+HEXWORD=7
+POS_INTEGER=8
+WS=9
+'/'=1
+'('=2
+','=3
+')'=4
+'['=5
+']'=6

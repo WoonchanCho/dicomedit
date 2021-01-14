@@ -1,8 +1,9 @@
 {
   "name": "dicomedit",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "main": "dist/web/dicomedit.min.js",
   "license": "MIT",
+  "author": "Neuroinformatics Research Group at Washington University in St. Louis",
   "homepage": "https://github.com/WoonchanCho/dicomedit",
   "scripts": {
     "clean": "yarn clean:dist && yarn clean:coverage",
@@ -15,7 +16,8 @@
     "webpack:prod": "webpack --progress --config ./config/webpack/webpack-prod.js",
     "webpack:watch": "webpack --progress --watch  --config ./config/webpack",
     "release": "release-it",
-    "test": "npx mocha"
+    "test": "npx mocha",
+    "antlr": "shx rm -rf src/Antlr/lib/* && ./gradle/gradlew -p ./gradle generateParser"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",
@@ -45,13 +47,13 @@
     "raw-loader": "^4.0.2",
     "release-it": "^14.2.2",
     "shx": "^0.3.3",
-    "terser-webpack-plugin": "^5.0.3",
     "webpack": "^5.11.0",
     "webpack-bundle-analyzer": "^4.3.0",
     "webpack-cli": "^4.3.1",
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "antlr4": "^4.9.1",
     "big-integer": "^1.6.48",
     "dcmjs": "^0.17.0",
     "debug": "^4.3.1",

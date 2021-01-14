@@ -1,0 +1,12 @@
+apply plugin: 'java'
+repositories {
+    jcenter()
+}
+dependencies {
+    runtime 'org.antlr:antlr4:4.9.1'
+}
+task generateParser(type:JavaExec) {
+   main = 'org.antlr.v4.Tool'
+   classpath = sourceSets.main.runtimeClasspath
+   args = ['-Dlanguage=JavaScript', '-o', '../src/Antlr/lib', '-visitor', '-Xexact-output-dir', '../src/Antlr/DE6Lexer.g4', '../src/Antlr/DE6Parser.g4', '../src/Antlr/TagPath.g4']
+}
