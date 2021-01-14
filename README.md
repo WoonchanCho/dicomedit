@@ -30,9 +30,9 @@ To be added
 ```html
 <script src="https://unpkg.com/dicomedit@0.0.9/dist/web/dicomedit.min.js"></script>
 <script>
-const script = `Version 6.3
-temp := 'chany'
-(0008,0008) := 'test'
+const script = `version "6.3"
+temp := "chany"
+(0008,0008) := "test"
 (0010,0010) := temp
 `;
 
@@ -56,9 +56,9 @@ temp := 'chany'
 const fs = require('fs');
 const { Anonymizer } = require('dicomedit/dist/node/dicomedit.min');
 
-const script = `Version 6.3
-temp := 'chany'
-(0008,0008) := 'test'
+const script = `version "6.3"
+temp := "chany"
+(0008,0008) := "test"
 (0010,0010) := temp
 `;
 
