@@ -1,6 +1,6 @@
 {
   "name": "dicomedit",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "main": "dist/web/dicomedit.min.js",
   "license": "MIT",
   "author": "Neuroinformatics Research Group at Washington University in St. Louis",
@@ -64,6 +64,8 @@
     "pegjs-backtrace": "^0.2.0"
   },
   "sideEffects": false,
-  "engineStrict" : true,
-  "engines" : { "node" : ">=14" }
+  "engineStrict": true,
+  "engines": {
+    "node": ">=14"
+  }
 }
