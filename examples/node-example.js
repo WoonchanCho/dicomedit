@@ -1,9 +1,9 @@
 const fs = require('fs');
-const { Anonymizer } = require('../dist/node/dicomedit.min');
+const { Anonymizer } = require('../dist/node/dicomedit');
 
 const script = `version "6.3"
 temp := "chany"
-(0008,0008) := "test"
+// (0008,0008) := "test"
 (0010,0010) := temp
 `;
 

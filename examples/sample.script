@@ -1,4 +1,4 @@
 version "6.3"
-temp := "chany"
-(0008,0008) := "test"
-(0010,0010) := temp
+//temp := "chany"
+//(0008,0008) := "test"
+//(0010,0010) := temp

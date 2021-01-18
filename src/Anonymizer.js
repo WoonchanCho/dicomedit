@@ -159,8 +159,9 @@ export default class Anonymizer {
         if (vals) {
           vals = Array.isArray(vals) ? vals : [vals];
           let len = vals.length;
-          if (len && vals[len - 1] && /\0$/.test(vals[len - 1])) {
-            vals[len - 1] = vals[len - 1].replace(/\0$/, '');
+          if (len && vals[len - 1] && /\0+$/.test(vals[len - 1])) {
+            console.log(tagName, tag);
+            vals[len - 1] = vals[len - 1].replace(/\0+$/, '');
           }
         }
       }
