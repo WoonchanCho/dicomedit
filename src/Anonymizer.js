@@ -143,7 +143,28 @@ export default class Anonymizer {
       inputBuffer instanceof Uint8Array ? inputBuffer.buffer : inputBuffer,
       options
     );
+    this.cleanseAfterloading();
     this.constructPrivateTagMap();
+  }
+
+  cleanseAfterloading() {
+    // According to the DICOM standard, Values with VRs constructed of character strings, except in the case of the VR UI, shall be padded with SPACE characters (20H, in the Default Character Repertoire) when necessary to achieve even length.
+    // However, some DICOM has NULL(00H) characters for this purpose.
+    // Manually remove the trailing 00H
+    const { dict = {} } = this.inputDict;
+    Object.keys(dict).forEach((tagName) => {
+      const tag = dict[tagName];
+      if (tag.vr === 'CS' || tag.vr === 'TM') {
+        let vals = tag.Value;
+        if (vals) {
+          vals = Array.isArray(vals) ? vals : [vals];
+          let len = vals.length;
+          if (len && vals[len - 1] && /\0$/.test(vals[len - 1])) {
+            vals[len - 1] = vals[len - 1].replace(/\0$/, '');
+          }
+        }
+      }
+    });
   }
 
   loadDcmUsingFileName(filename) {
