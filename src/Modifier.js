@@ -13,6 +13,9 @@ const { DicomMessage } = dcmjs.data;
 
 /**
  * DICOM Modifier Class
+ *
+ * @class Modifier
+ * @classdesc DICOM Modifier Class
  */
 export default class Modifier {
   /**
