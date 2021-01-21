@@ -296,7 +296,7 @@ const script = `version "6.3"
       { 'pid/NOID': 'fsdafsd' },
       undefined
     );
-    const filename = process.argv[2] || '/Users/woonchan/Desktop/res1.dcm';
+    const filename = process.argv[2] || '/Users/woonchan/Desktop/res.dcm';
     const buffer2 = fs.readFileSync(filename);
     anonymizer.loadDcm(buffer2);
     // console.log(anonymizer.privateTagMap);

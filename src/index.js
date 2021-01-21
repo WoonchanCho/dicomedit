@@ -1,4 +1,5 @@
 import Anonymizer from './Anonymizer';
+import Modifier from './Modifier';
 import {
   RuleGroup,
   Rule,
@@ -22,6 +23,7 @@ export default Anonymizer;
 
 export {
   Anonymizer,
+  Modifier,
   RuleGroup,
   Rule,
   Statement,

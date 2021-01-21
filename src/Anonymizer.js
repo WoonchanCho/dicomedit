@@ -2,6 +2,7 @@ import dcmjs from 'dcmjs';
 import debug from 'debug';
 import fs from 'fs';
 
+import { RuleGroup, Parser } from '.';
 import {
   APP_NAME,
   RULE_RESULT_STATUSES,
@@ -25,9 +26,7 @@ import {
 import { CONDITION_TYPES, ELEMENT_TYPES, STATEMENT_TYPES } from './Rule';
 import { Expression } from './Expression';
 import { RuleResult } from './RuleResult';
-
 import TagLiteral from './TagLiteral';
-import { RuleGroup, Parser } from '.';
 
 const log = debug(`${APP_NAME}:Anonymizer`);
 const { DicomMessage, DicomDict } = dcmjs.data;
@@ -40,8 +39,13 @@ export default class Anonymizer {
    *
    * Creates a Anonymizer object.
    * @param {string|RuleGroup} scriptOrRuleGroup - script or ruleGroup object
-   * @param {Object} [identifiers={}] - Initial identifiers
-   * @param {ArrayBuffer|Buffer}  [inputBuffer=undefined] - Once inputBuffer provided, loads the image buffer during the object construction.
+   * @param {Object} [options] - options
+   * @param {Object} [options.identifiers] - Initial identifiers
+   * @param {Object} [options.lookupMap] - Lookup Map object
+   * @param {ArrayBuffer|Buffer}  [options.inputBuffer] - Once inputBuffer provided, loads the image buffer during the object construction.
+   * @param {string} [options.namespaceforHashUID] - namespace used when producing uuid v5 value in the hashUID function
+   * @param {string} [options.parserLibrary] - parser library to use (ANTLR4 or PEGJS)
+   * @param {boolean} [options.trace] - whether to trace when producing parser when using PEG.js
    */
   constructor(
     scriptOrRuleGroup,
@@ -50,8 +54,8 @@ export default class Anonymizer {
       lookupMap: {},
       inputBuffer: undefined,
       namespaceforHashUID: '',
-      trace: false,
       parserLibrary: DEFAULT_PARSER_LIBRARY,
+      trace: false,
     }
   ) {
     const {
@@ -123,7 +127,7 @@ export default class Anonymizer {
 
   /**
    * Loads a DICOM object from the input buffer.
-   * @param {ArrayBuffer|Uint8Array|String} inputBuffer - InputBuffer should be a type of ArrayBuffer or Uinit8Array. (The Buffer type on Node.js is allowed because it extends Uint8Array)
+   * @param {ArrayBuffer|Uint8Array} inputBuffer - InputBuffer should be a type of ArrayBuffer or Uinit8Array. (The Buffer type on Node.js is allowed because it extends Uint8Array)
    * @param {Object} [options={ignoreErrors: true}] - Specifies options to be used while loading a DICOM object
    * @param {boolean} options.ignoreErrors - True if you want to disregard errors that happens inside dcmjs library while loading a DICOM object.
    */
@@ -139,10 +143,15 @@ export default class Anonymizer {
     log(
       `Loading a DICOM object from the ${inputBuffer.byteLength} byte buffer`
     );
-    this.inputDict = DicomMessage.readFile(
+    const dicomDict = DicomMessage.readFile(
       inputBuffer instanceof Uint8Array ? inputBuffer.buffer : inputBuffer,
       options
     );
+    this.loadFromDicomDict(dicomDict);
+  }
+
+  loadFromDicomDict(dicomDict) {
+    this.inputDict = dicomDict;
     this.cleanseAfterloading();
     this.constructPrivateTagMap();
   }

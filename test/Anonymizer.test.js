@@ -48,7 +48,7 @@ describe('Anonymizer.js', function () {
 
     it('should throw error when a script is not valid', function () {
       expect(() => {
-        new Anonymizer(`Ver`);
+        new Anonymizer(`Ver`, { parserLibrary: 'PEGJS' });
       }).to.throw();
     });
 
