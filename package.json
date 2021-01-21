@@ -1,6 +1,6 @@
 {
   "name": "dicomedit",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "main": "dist/web/dicomedit.min.js",
   "license": "MIT",
   "author": "Neuroinformatics Research Group at Washington University in St. Louis",
@@ -16,7 +16,7 @@
     "build:prod": "webpack --progress --config ./config/webpack/webpack-prod.js",
     "build:watch": "webpack --progress --watch  --config ./config/webpack",
     "build:type": "tsc",
-    "release": "release-it",
+    "release": "npm release-it",
     "test": "npx mocha",
     "antlr": "shx rm -rf src/Antlr/lib/* && ./gradle/gradlew -p ./gradle generateParser"
   },
