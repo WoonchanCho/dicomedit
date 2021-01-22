@@ -1,0 +1,54 @@
+declare class DE6Lexer {
+    static grammarFileName: string;
+    static channelNames: string[];
+    static modeNames: string[];
+    static literalNames: string[];
+    static symbolicNames: string[];
+    static ruleNames: string[];
+    constructor(input: any);
+    _interp: any;
+    get atn(): any;
+}
+declare namespace DE6Lexer {
+    const EOF: any;
+    const PUBLIC_GROUP: number;
+    const PVT_GROUP: number;
+    const PUBLIC_ELEMENT: number;
+    const PVT_ELEMENT: number;
+    const HEXDIGIT_WILDCARD: number;
+    const TEST_SYMBOL: number;
+    const TEST_SEPERATOR: number;
+    const ITEM_WILDCARD: number;
+    const SEQ_WILDCARD: number;
+    const WS: number;
+    const COMMA: number;
+    const ECHO: number;
+    const EQUALS: number;
+    const NOT_EQUALS: number;
+    const MATCHES: number;
+    const NOT_MATCHES: number;
+    const ASSIGN: number;
+    const ASSIGN_IF_EXISTS: number;
+    const DESCRIBE: number;
+    const HIDDEN_TOKEN: number;
+    const CONST_TOKEN: number;
+    const IMMUTABLE_TOKEN: number;
+    const EXPORT: number;
+    const REMOVE_ALL_PRIVATE_TAGS: number;
+    const VERSION_WORD: number;
+    const LEFT_BRACKET: number;
+    const RIGHT_BRACKET: number;
+    const SLASH: number;
+    const DELETE_OPERATOR: number;
+    const INTEGER: number;
+    const FLOAT: number;
+    const ID: number;
+    const COMMENT: number;
+    const NEWLINE: number;
+    const STRING: number;
+    const OPEN: number;
+    const PVT_CREATOR_ID: number;
+    const CLOSE: number;
+    const PVT_CREATOR_MODE: number;
+}
+export default DE6Lexer;
