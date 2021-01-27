@@ -19,6 +19,8 @@ import TagLiteral from './TagLiteral';
 
 import Errors from './Error';
 
+import Dictionary from './Dictionary';
+
 export default Anonymizer;
 
 export {
@@ -37,4 +39,5 @@ export {
   Parser,
   TagLiteral,
   Errors,
+  Dictionary,
 };

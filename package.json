@@ -58,7 +58,7 @@
   "dependencies": {
     "antlr4": "^4.9.1",
     "big-integer": "^1.6.48",
-    "dcmjs": "^0.17.0",
+    "dcmjs": "^0.17.1",
     "debug": "^4.3.1",
     "dicomedit-uuid": "^8.3.2",
     "isomorphic-unfetch": "^3.1.0",
