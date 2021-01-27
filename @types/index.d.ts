@@ -14,4 +14,5 @@ import { EXPRESSION_FUNCTIONS } from "./Expression";
 import Parser from "./Parser";
 import TagLiteral from "./TagLiteral";
 import Errors from "./Error";
-export { Anonymizer, Modifier, RuleGroup, Rule, Statement, Condition, Element, Expression, STATEMENT_TYPES, CONDITION_TYPES, ELEMENT_TYPES, EXPRESSION_FUNCTIONS, Parser, TagLiteral, Errors };
+import Dictionary from "./Dictionary";
+export { Anonymizer, Modifier, RuleGroup, Rule, Statement, Condition, Element, Expression, STATEMENT_TYPES, CONDITION_TYPES, ELEMENT_TYPES, EXPRESSION_FUNCTIONS, Parser, TagLiteral, Errors, Dictionary };
