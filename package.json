@@ -1,6 +1,6 @@
 {
   "name": "dicomedit",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "main": "dist/web/dicomedit.min.js",
   "types": "@types/index.d.ts",
   "license": "MIT",
