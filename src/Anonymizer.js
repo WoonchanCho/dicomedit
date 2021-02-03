@@ -147,12 +147,15 @@ export default class Anonymizer {
       inputBuffer instanceof Uint8Array ? inputBuffer.buffer : inputBuffer,
       options
     );
+    console.log('DicomMessage.readFile completed')
     this.loadFromDicomDict(dicomDict);
   }
 
   loadFromDicomDict(dicomDict) {
     this.inputDict = dicomDict;
+    console.log('cleansing')
     this.cleanseAfterloading();
+    console.log('construct private tag map')
     this.constructPrivateTagMap();
   }
 
