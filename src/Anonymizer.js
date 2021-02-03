@@ -318,7 +318,7 @@ export default class Anonymizer {
         return arraysEqual(value1, value2);
 
       case CONDITION_TYPES.NOT_EQUAL:
-        return arraysEqual(value1, value2);
+        return !arraysEqual(value1, value2);
 
       case CONDITION_TYPES.MATCH:
         regex = new RegExp(value2);

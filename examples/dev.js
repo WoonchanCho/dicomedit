@@ -227,6 +227,7 @@ const ruleGroup = new RuleGroup('6.3', [
 
 ruleGroup && ruleGroup2;
 const script = `version "6.3"
+project != "Unassigned" ? (0008,1030) := project
 - (0008,0008)
 // (0008,0008) := "HOLOGIC, Inc."
 // - (0019,{HOLOGIC, Inc.}X@)/(0001,0022)
@@ -290,12 +291,10 @@ const script = `version "6.3"
     const ruleGroup3 = parser.parse(script, { trace: true });
     console.log(ruleGroup3.rules[0]);
 
-    const anonymizer = new Anonymizer(
-      ruleGroup3,
-      { chany: 'aaa2332' },
-      { 'pid/NOID': 'fsdafsd' },
-      undefined
-    );
+    const anonymizer = new Anonymizer(ruleGroup3, {
+      identifiers: { chany: 'aaa2332', project: 'Unassigned' },
+      lookupMap: { 'pid/NOID': 'fsdafsd' },
+    });
     const filename = process.argv[2] || '/Users/woonchan/Desktop/res.dcm';
     const buffer2 = fs.readFileSync(filename);
     anonymizer.loadDcm(buffer2);
