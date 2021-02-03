@@ -10,7 +10,7 @@ import {
   DEFAULT_PARSER_LIBRARY,
 } from './Common/Constant';
 import {
-  cloneDeep,
+//   cloneDeep,
   arraysEqual,
   tokenizeTagPath,
   validateIdentifierConvention,
@@ -217,7 +217,8 @@ export default class Anonymizer {
     this._initializeOutput();
 
     // Performs a deep cloning of the input DICOM object.
-    this.outputDict = cloneDeep(this.inputDict);
+    // this.outputDict = cloneDeep(this.inputDict);
+    this.outputDict = this.inputDict
 
     const {
       ruleGroup: { rules },
