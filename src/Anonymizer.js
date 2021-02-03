@@ -10,7 +10,7 @@ import {
   DEFAULT_PARSER_LIBRARY,
 } from './Common/Constant';
 import {
-//   cloneDeep,
+  //   cloneDeep,
   arraysEqual,
   tokenizeTagPath,
   validateIdentifierConvention,
@@ -38,7 +38,7 @@ export default class Anonymizer {
   /**
    *
    * Creates a Anonymizer object.
-   * @param {string|RuleGroup} scriptOrRuleGroup - script or ruleGroup object
+   * @param {string|RuleGroup|string[]} scriptOrRuleGroup - script or ruleGroup object
    * @param {Object} [options] - options
    * @param {Object} [options.identifiers] - Initial identifiers
    * @param {Object} [options.lookupMap] - Lookup Map object
@@ -73,7 +73,8 @@ export default class Anonymizer {
     }
     if (
       typeof scriptOrRuleGroup !== 'string' &&
-      !(scriptOrRuleGroup instanceof RuleGroup)
+      !(scriptOrRuleGroup instanceof RuleGroup) &&
+      !Array.isArray(scriptOrRuleGroup)
     ) {
       throw new IllegalArgumentsError(
         'DicomEdit script or the rule group definition is required'
@@ -101,10 +102,18 @@ export default class Anonymizer {
 
     this.lookupMap = lookupMap || {};
 
-    this.ruleGroup =
-      scriptOrRuleGroup instanceof RuleGroup
-        ? scriptOrRuleGroup
-        : Parser.parse(scriptOrRuleGroup, { trace, parserLibrary });
+    if (typeof scriptOrRuleGroup === 'string') {
+      this.ruleGroup = Parser.parse(scriptOrRuleGroup, {
+        trace,
+        parserLibrary,
+      });
+    } else if (scriptOrRuleGroup instanceof RuleGroup) {
+      this.ruleGroup = scriptOrRuleGroup;
+    } else {
+      this.ruleGroup = scriptOrRuleGroup.map((script) =>
+        Parser.parse(script, { trace, parserLibrary })
+      );
+    }
 
     if (inputBuffer) {
       this.loadDcm(inputBuffer);
@@ -147,15 +156,12 @@ export default class Anonymizer {
       inputBuffer instanceof Uint8Array ? inputBuffer.buffer : inputBuffer,
       options
     );
-    console.log('DicomMessage.readFile completed')
     this.loadFromDicomDict(dicomDict);
   }
 
   loadFromDicomDict(dicomDict) {
     this.inputDict = dicomDict;
-    console.log('cleansing')
     this.cleanseAfterloading();
-    console.log('construct private tag map')
     this.constructPrivateTagMap();
   }
 
@@ -216,17 +222,24 @@ export default class Anonymizer {
         'Please load dcm buffer before applying rules'
       );
     }
-
     this._initializeOutput();
 
     // Performs a deep cloning of the input DICOM object.
     // this.outputDict = cloneDeep(this.inputDict);
-    this.outputDict = this.inputDict
+    this.outputDict = this.inputDict;
 
-    const {
-      ruleGroup: { rules },
-      ruleResult,
-    } = this;
+    if (Array.isArray(this.ruleGroup)) {
+      for (let i = 0; i < this.ruleGroup.length; ++i) {
+        await this._applyRules(this.ruleGroup[i]);
+      }
+    } else {
+      await this._applyRules(this.ruleGroup);
+    }
+  }
+
+  async _applyRules(ruleGroup) {
+    const { ruleResult } = this;
+    const { rules = {} } = ruleGroup;
 
     // Applies anonymization rules sequentially in order.
     for (let i = 0; i < rules.length; ++i) {

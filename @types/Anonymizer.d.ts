@@ -5,7 +5,7 @@ export default class Anonymizer {
     /**
      *
      * Creates a Anonymizer object.
-     * @param {string|RuleGroup} scriptOrRuleGroup - script or ruleGroup object
+     * @param {string|RuleGroup|string[]} scriptOrRuleGroup - script or ruleGroup object
      * @param {Object} [options] - options
      * @param {Object} [options.identifiers] - Initial identifiers
      * @param {Object} [options.lookupMap] - Lookup Map object
@@ -14,7 +14,7 @@ export default class Anonymizer {
      * @param {string} [options.parserLibrary] - parser library to use (ANTLR4 or PEGJS)
      * @param {boolean} [options.trace] - whether to trace when producing parser when using PEG.js
      */
-    constructor(scriptOrRuleGroup: string | RuleGroup, options?: {
+    constructor(scriptOrRuleGroup: string | RuleGroup | string[], options?: {
         identifiers: any;
         lookupMap: any;
         inputBuffer: ArrayBuffer | Buffer;
@@ -24,7 +24,7 @@ export default class Anonymizer {
     });
     initialIdentifiers: any;
     lookupMap: any;
-    ruleGroup: RuleGroup;
+    ruleGroup: RuleGroup | RuleGroup[];
     namespaceforHashUID: string;
     parserLibrary: string;
     /**
@@ -54,6 +54,7 @@ export default class Anonymizer {
      * Anonymize the loaded DICOM object by applying the rules provided when the object is created.
      */
     applyRules(): Promise<void>;
+    _applyRules(ruleGroup: any): Promise<void>;
     applyRule(rule: any): Promise<void>;
     resolveElementValue(element: any): Promise<any>;
     _checkCondition(condition: any): Promise<boolean>;
