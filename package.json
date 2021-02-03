@@ -1,6 +1,6 @@
 {
   "name": "dicomedit",
-  "version": "0.0.21",
+  "version": "0.0.23",
   "main": "dist/web/dicomedit.min.js",
   "types": "@types/index.d.ts",
   "license": "MIT",
@@ -12,7 +12,7 @@
     "clean:dist": "shx rm -rf dist",
     "clean:docs": "shx rm -rf docs",
     "doc:generate": "yarn clean:docs && jsdoc -c jsdoc.conf.js",
-    "build": "yarn clean:dist && yarn build:dev && yarn build:prod && build:type",
+    "build": "yarn clean:dist && yarn build:dev && yarn build:prod && yarn build:type",
     "build:dev": "webpack --progress --config ./config/webpack/webpack-dev.js",
     "build:prod": "webpack --progress --config ./config/webpack/webpack-prod.js",
     "build:watch": "webpack --progress --watch  --config ./config/webpack",
