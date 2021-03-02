@@ -60,13 +60,13 @@ describe('Anonymizer.js', function () {
 
     it('should throw error when identifiers is not a type of object', function () {
       expect(() => {
-        new Anonymizer(script, 'illegal identifiers');
+        new Anonymizer(script, { identifiers: 'illegal identifiers' });
       }).to.throw(Errors.IllegalArgumentsError);
     });
 
     it('should throw error when lookupMap is not a type of object', function () {
       expect(() => {
-        new Anonymizer(script, undefined, 'illegal lookupMap');
+        new Anonymizer(script, { lookupMap: 'illegal lookupMap' });
       }).to.throw(Errors.IllegalArgumentsError);
     });
 
@@ -82,7 +82,7 @@ describe('Anonymizer.js', function () {
 
     it('should set initialIdentifiers', function () {
       const identifiers = { test: 'value' };
-      const anonymizer = new Anonymizer(script, identifiers);
+      const anonymizer = new Anonymizer(script, { identifiers });
       expect(anonymizer).to.have.deep.property('initialIdentifiers', {
         test: 'value',
       });
@@ -90,22 +90,15 @@ describe('Anonymizer.js', function () {
 
     it('should set lookupMap', function () {
       const lookupMap = { key: 'value' };
-      const anonymizer = new Anonymizer(script, undefined, lookupMap);
+      const anonymizer = new Anonymizer(script, { lookupMap });
       expect(anonymizer).to.have.deep.property('lookupMap', { key: 'value' });
     });
 
     it('should set namespaceforHashUID', function () {
-      const anonymizer = new Anonymizer(
-        script,
-        undefined,
-        undefined,
-        undefined,
-        { namespaceforHashUID: 'namespace' }
-      );
-      expect(anonymizer).to.have.deep.property(
-        'namespaceforHashUID',
-        'namespace'
-      );
+      const anonymizer = new Anonymizer(script, {
+        namespaceforHashUID: 'namespace',
+      });
+      expect(anonymizer).to.have.deep.property('namespaceforHashUID', 'namespace');
     });
   });
 
