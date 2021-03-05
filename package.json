@@ -12,7 +12,7 @@
     "clean:dist": "shx rm -rf dist",
     "clean:docs": "shx rm -rf docs",
     "doc:generate": "yarn clean:docs && jsdoc -c jsdoc.conf.js",
-    "prebuild": "cd node_modules && cd dcmjs && npm install && npm run build",
+    "prebuild": "cd node_modules && cd dcmjs && shx rm -rf node_modules && npm install && npm run build",
     "build": "yarn prebuild && yarn clean:dist && yarn build:dev && yarn build:prod && yarn build:type",
     "build:dev": "webpack --progress --config ./config/webpack/webpack-dev.js",
     "build:prod": "webpack --progress --config ./config/webpack/webpack-prod.js",
@@ -61,7 +61,7 @@
   "dependencies": {
     "antlr4": "^4.9.1",
     "big-integer": "^1.6.48",
-    "dcmjs": "https://github.com/WoonchanCho/dcmjs.git#umaster",
+    "dcmjs": "https://github.com/WoonchanCho/dcmjs.git#6905e7596a5485f71ed1382a4c567e9b5568d753",
     "debug": "^4.3.1",
     "dicomedit-uuid": "^8.3.2",
     "isomorphic-unfetch": "^3.1.0",

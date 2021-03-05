@@ -69,7 +69,9 @@ export default class Anonymizer {
     getChildTagNumbers(parent?: any): number[];
     _deleteTag(parents: any, tagTokens: any): void;
     deleteTag(dicomDict: any, tagPath: any): void;
-    write(): any;
+    write(options?: {
+        strict: boolean;
+    }): any;
     matchKeys(tagLiteral: any, parent?: any): string[];
     getMembersTagNamesOf(privateHeaderTag: any): string[];
     draw(shape: any, shapeParams: any): void;

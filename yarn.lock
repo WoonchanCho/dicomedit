@@ -3079,9 +3079,9 @@ dateformat@^3.0.0, dateformat@^3.0.3:
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-3.0.3.tgz#a6e37499a4d9a9cf85ef5872044d62901c9889ae"
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
 
-"dcmjs@https://github.com/WoonchanCho/dcmjs.git#umaster":
+"dcmjs@https://github.com/WoonchanCho/dcmjs.git#6905e7596a5485f71ed1382a4c567e9b5568d753":
   version "0.11.0"
-  resolved "https://github.com/WoonchanCho/dcmjs.git#0b191b5d7d5f1988b3f03d39bf0aee5c4b83228e"
+  resolved "https://github.com/WoonchanCho/dcmjs.git#6905e7596a5485f71ed1382a4c567e9b5568d753"
   dependencies:
     "@babel/polyfill" "^7.8.3"
     "@babel/runtime" "^7.8.4"
