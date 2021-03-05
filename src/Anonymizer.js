@@ -521,12 +521,13 @@ export default class Anonymizer {
     this._deleteTag([dicomDict.dict], tokenizeTagPath(tagPath));
   }
 
-  write() {
+  write(options = { strict: false }) {
     if (!this.outputDict) {
       throw new NotFoundError('There is no output to write');
     }
+    const { strict = false } = options;
     try {
-      return this.outputDict.write();
+      return this.outputDict.write({ allowInvalidVrLength: !strict });
     } catch (err) {
       throw new DicomWriteError(err.message, err);
     }
