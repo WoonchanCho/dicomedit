@@ -527,7 +527,7 @@ export default class Anonymizer {
     }
     const { strict = false } = options;
     try {
-      return this.outputDict.write({ allowInvalidVrLength: !strict });
+      return this.outputDict.write({ allowInvalidVRLength: !strict });
     } catch (err) {
       throw new DicomWriteError(err.message, err);
     }

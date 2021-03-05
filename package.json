@@ -61,7 +61,7 @@
   "dependencies": {
     "antlr4": "^4.9.1",
     "big-integer": "^1.6.48",
-    "dcmjs": "https://github.com/WoonchanCho/dcmjs.git#6905e7596a5485f71ed1382a4c567e9b5568d753",
+    "dcmjs": "https://github.com/WoonchanCho/dcmjs.git#f846bd96a89b9cc69467ff75532083ea311e343a",
     "debug": "^4.3.1",
     "dicomedit-uuid": "^8.3.2",
     "isomorphic-unfetch": "^3.1.0",
