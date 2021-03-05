@@ -62,9 +62,7 @@ export class Expression {
   async evaluate(anonymizer) {
     const { funcName, args } = this;
     if (!EXPRESSION_FUNCTIONS[funcName] || !this[funcName]) {
-      throw new IllegalArgumentsError(
-        `the function ${funcName} is not supported`
-      );
+      throw new IllegalArgumentsError(`the function ${funcName} is not supported`);
     }
 
     const argsPromises = args.map(async (arg) => {
@@ -77,11 +75,7 @@ export class Expression {
       }
     });
 
-    return this[funcName].call(
-      this,
-      anonymizer,
-      ...(await Promise.all(argsPromises))
-    );
+    return this[funcName].call(this, anonymizer, ...(await Promise.all(argsPromises)));
   }
 
   concatenate(anonymizer, ...args) {
@@ -89,47 +83,45 @@ export class Expression {
     return args.join('');
   }
 
-  format(anonymizer, formatString, ...formatArgs) {
+  format(_anonymizer, formatString, ...formatArgs) {
     // if (args.length === 1 && args[0] !== null && typeof args[0] === 'object') {
     //   args = args[0];
     // }
     return formatString.replace(/{([^}]*)}/g, function (match, key) {
-      return typeof formatArgs[key] !== 'undefined'
-        ? formatArgs[key]
-        : 'undefined';
+      return typeof formatArgs[key] !== 'undefined' ? formatArgs[key] : 'undefined';
     });
   }
 
-  async getURL(anonymizer, url, key = undefined) {
+  async getURL(_anonymizer_anonymizer, url, key = undefined) {
     // const key = args.length > 1 ? args[1] : undefined;
     const response = await fetch(url);
     const json = await response.json();
     return key ? json[key] : json;
   }
 
-  hashUID(anonymizer, arg) {
+  hashUID(_anonymizer, arg) {
     log('Running hashUID');
     return getHashUID(arg);
   }
 
-  ismatch(anonymizer, value, pattern) {
+  ismatch(_anonymizer, value, pattern) {
     log('Running ismatch');
     const regex = new RegExp(pattern);
     return regex.test(value);
   }
 
-  replace(anonymizer, arg, target, replacement) {
+  replace(_anonymizer, arg, target, replacement) {
     log('Running replace');
     const str = Array.isArray(arg) ? arg.join('') : arg;
     return str.replace(new RegExp(target, 'g'), replacement);
   }
 
-  lowercase(anonymizer, arg) {
+  lowercase(_anonymizer, arg) {
     log('Running lowercase');
     return arg.toLowerCase();
   }
 
-  substring(anonymizer, arg, beg, end) {
+  substring(_anonymizer, arg, beg, end) {
     log('Running substring');
     const str = Array.isArray(arg) ? arg.join('') : arg;
     return str.substring(beg, end);
@@ -140,14 +132,11 @@ export class Expression {
     anonymizer._setTag(anonymizer.outputDict, tagName, value);
   }
 
-  shiftDateByIncrement(anonymizer, arg, days) {
+  shiftDateByIncrement(_anonymizer, arg, days) {
     log('Running shiftDateByIncrement');
     const dateString = Array.isArray(arg) ? arg[0] : arg;
     const dt = new Date(
-      `${dateString.substring(0, 4)}-${dateString.substring(
-        4,
-        6
-      )}-${dateString.substring(6, 8)}`
+      `${dateString.substring(0, 4)}-${dateString.substring(4, 6)}-${dateString.substring(6, 8)}`
     );
     dt.setDate(dt.getDate() + parseInt(days));
     return dt.toISOString().substring(0, 10).replace(/-/g, '');
@@ -163,7 +152,7 @@ export class Expression {
     log('shiftDateTimeSequenceByIncrement');
   }
 
-  uppercase(anonymizer, arg) {
+  uppercase(_anonymizer, arg) {
     log('Running uppercase');
     return arg.toUpperCase();
   }
@@ -182,7 +171,7 @@ export class Expression {
     });
   }
 
-  echo(anonymizer, ...args) {
+  echo(_anonymizer, ...args) {
     log('Echoing');
     console.log(args.join(' '));
   }
@@ -220,13 +209,20 @@ export class Expression {
   }
 
   // eslint-disable-next-line no-unused-vars
-  describe(anonymizer, ...args) {
+  describe(_anonymizer, ...args) {
     log('Skipping describe - not implemented yet');
   }
 
-  // eslint-disable-next-line no-unused-vars
+  /**
+   *
+   * @param {Anonymizer} anonymizer
+   * @param {*} shape
+   * @param {*} shapeParams
+   * @param {*} fillPattern
+   * @param {*} fillPatternParams
+   */
   alterPixels(anonymizer, shape, shapeParams, fillPattern, fillPatternParams) {
-    log(shape, shapeParams, fillPattern, fillPatternParams);
-    log('Skipping alterPixels - not implemented yet');
+    log('Altering pixels', shape, shapeParams, fillPattern, fillPatternParams);
+    anonymizer.draw(shape, shapeParams);
   }
 }

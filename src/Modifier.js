@@ -9,7 +9,7 @@ import { IllegalArgumentsError, EnvironmentError } from './Error';
 import TagLiteral from './TagLiteral';
 
 const log = debug(`${APP_NAME}:Modifier`);
-const { DicomMessage } = dcmjs.data;
+const { DicomMessage, PixelModifier } = dcmjs.data;
 
 /**
  * DICOM Modifier Class
@@ -37,17 +37,12 @@ export default class Modifier {
    * @param {boolean} options.ignoreErrors - True if you want to disregard errors that happens inside dcmjs library while loading a DICOM object.
    */
   loadDcm(inputBuffer, options = { ignoreErrors: true }) {
-    if (
-      !(inputBuffer instanceof ArrayBuffer) &&
-      !(inputBuffer instanceof Uint8Array)
-    ) {
+    if (!(inputBuffer instanceof ArrayBuffer) && !(inputBuffer instanceof Uint8Array)) {
       throw new IllegalArgumentsError(
         'InputBuffer should be a type of ArrayBuffer (or Buffer on Node.JS)'
       );
     }
-    log(
-      `Loading a DICOM object from the ${inputBuffer.byteLength} byte buffer`
-    );
+    log(`Loading a DICOM object from the ${inputBuffer.byteLength} byte buffer`);
     this.rawJson = DicomMessage.readFile(
       inputBuffer instanceof Uint8Array ? inputBuffer.buffer : inputBuffer,
       options
@@ -78,9 +73,7 @@ export default class Modifier {
 
   loadDcmUsingFileName(filename) {
     if (!fs) {
-      throw new EnvironmentError(
-        'This function is supported only on the Node.JS environment'
-      );
+      throw new EnvironmentError('This function is supported only on the Node.JS environment');
     }
     const arrayBuffer = fs.readFileSync(filename);
     this.loadDcm(arrayBuffer);
@@ -92,11 +85,7 @@ export default class Modifier {
     const { dict } = this.rawJson;
     Object.keys(dict).forEach((tagName) => {
       const tag = dict[tagName];
-      if (
-        TagLiteral.isPrivateTagHeader(tagName) &&
-        Array.isArray(tag.Value) &&
-        tag.Value.length
-      ) {
+      if (TagLiteral.isPrivateTagHeader(tagName) && Array.isArray(tag.Value) && tag.Value.length) {
         const key = tag.Value[0].trim();
         privateTagMap[key] = new TagLiteral(tagName);
       }
@@ -132,5 +121,15 @@ export default class Modifier {
     if (this.rawJson.dict[tagName]) {
       delete this.rawJson.dict[tagName];
     }
+  }
+
+  drawRectangle({ left, top, right, bottom }) {
+    const pixelModifier = new PixelModifier(this.rawJson);
+    pixelModifier.draw('rectangle', {
+      left,
+      top,
+      right,
+      bottom,
+    });
   }
 }

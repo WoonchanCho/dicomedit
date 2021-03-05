@@ -35,4 +35,10 @@ export default class Modifier {
     }): Promise<void>;
     setTag(tagName: any, vr: any, values: any): void;
     deleteTag(tagName: any): void;
+    drawRectangle({ left, top, right, bottom }: {
+        left: any;
+        top: any;
+        right: any;
+        bottom: any;
+    }): void;
 }

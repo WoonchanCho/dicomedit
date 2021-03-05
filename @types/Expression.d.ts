@@ -29,22 +29,30 @@ export class Expression {
     args: any[];
     evaluate(anonymizer: any): any;
     concatenate(anonymizer: any, ...args: any[]): string;
-    format(anonymizer: any, formatString: any, ...formatArgs: any[]): any;
-    getURL(anonymizer: any, url: any, key?: any): Promise<any>;
-    hashUID(anonymizer: any, arg: any): string;
-    ismatch(anonymizer: any, value: any, pattern: any): boolean;
-    replace(anonymizer: any, arg: any, target: any, replacement: any): any;
-    lowercase(anonymizer: any, arg: any): any;
-    substring(anonymizer: any, arg: any, beg: any, end: any): any;
+    format(_anonymizer: any, formatString: any, ...formatArgs: any[]): any;
+    getURL(_anonymizer_anonymizer: any, url: any, key?: any): Promise<any>;
+    hashUID(_anonymizer: any, arg: any): string;
+    ismatch(_anonymizer: any, value: any, pattern: any): boolean;
+    replace(_anonymizer: any, arg: any, target: any, replacement: any): any;
+    lowercase(_anonymizer: any, arg: any): any;
+    substring(_anonymizer: any, arg: any, beg: any, end: any): any;
     set(anonymizer: any, tagName: any, value: any): void;
-    shiftDateByIncrement(anonymizer: any, arg: any, days: any): string;
+    shiftDateByIncrement(_anonymizer: any, arg: any, days: any): string;
     shiftDateTimeByIncrement(anonymizer: any, arg: any, days: any): void;
     shiftDateTimeSequenceByIncrement(anonymizer: any, second: any, tagPath: any): void;
-    uppercase(anonymizer: any, arg: any): any;
+    uppercase(_anonymizer: any, arg: any): any;
     removeAllPrivateTags(anonymizer: any): void;
-    echo(anonymizer: any, ...args: any[]): void;
+    echo(_anonymizer: any, ...args: any[]): void;
     lookup(anonymizer: any, key1: any, key2: any): any;
     retainPrivateTags(anonymizer: any, ...args: any[]): void;
-    describe(anonymizer: any, ...args: any[]): void;
+    describe(_anonymizer: any, ...args: any[]): void;
+    /**
+     *
+     * @param {Anonymizer} anonymizer
+     * @param {*} shape
+     * @param {*} shapeParams
+     * @param {*} fillPattern
+     * @param {*} fillPatternParams
+     */
     alterPixels(anonymizer: any, shape: any, shapeParams: any, fillPattern: any, fillPatternParams: any): void;
 }

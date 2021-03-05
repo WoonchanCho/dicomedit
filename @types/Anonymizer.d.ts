@@ -72,6 +72,8 @@ export default class Anonymizer {
     write(): any;
     matchKeys(tagLiteral: any, parent?: any): string[];
     getMembersTagNamesOf(privateHeaderTag: any): string[];
+    draw(shape: any, shapeParams: any): void;
+    parseShapeParams(shapeParams: any): {};
 }
 import { RuleGroup } from ".";
 import { RuleResult } from "./RuleResult";

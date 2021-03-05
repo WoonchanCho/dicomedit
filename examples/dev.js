@@ -1,5 +1,6 @@
-import fs from 'fs';
-import Anonymizer, {
+const fs = require('fs');
+const {
+  Anonymizer,
   RuleGroup,
   Rule,
   Statement,
@@ -9,7 +10,12 @@ import Anonymizer, {
   ELEMENT_TYPES,
   EXPRESSION_FUNCTIONS,
   Parser,
-} from '../dist/node/dicomedit.js';
+} = require('../dist/node/dicomedit');
+
+const dcmjs = require('dcmjs/build/dcmjs');
+const {
+  data: { DicomMessage, PixelModifier },
+} = dcmjs;
 
 const ruleGroup2 = RuleGroup.fromObject({
   rules: [
@@ -155,12 +161,7 @@ const ruleGroup = new RuleGroup('6.3', [
               EXPRESSION_FUNCTIONS.concatenate,
               new Element(
                 ELEMENT_TYPES.EXPRESSION,
-                new Expression(
-                  EXPRESSION_FUNCTIONS.replace,
-                  'fsfsdfsdf',
-                  'f',
-                  '='
-                )
+                new Expression(EXPRESSION_FUNCTIONS.replace, 'fsfsdfsdf', 'f', '=')
               )
             )
           )
@@ -191,13 +192,7 @@ const ruleGroup = new RuleGroup('6.3', [
         ELEMENT_TYPES.EXPRESSION,
         new Expression(
           EXPRESSION_FUNCTIONS.uppercase,
-          new Expression(
-            EXPRESSION_FUNCTIONS.format,
-            '{0}_{1}_{2}',
-            'a',
-            'b',
-            0
-          )
+          new Expression(EXPRESSION_FUNCTIONS.format, '{0}_{1}_{2}', 'a', 'b', 0)
         )
       ),
       { runsIfExists: true }
@@ -228,7 +223,8 @@ const ruleGroup = new RuleGroup('6.3', [
 ruleGroup && ruleGroup2;
 const script = `version "6.3"
 project != "Unassigned" ? (0008,1030) := project
-- (0008,0008)
+alterPixels["rectangle", "l=0, t=0, r=1000, b=1000", "solid", "v=100"]
+// - (0008,0008)
 // (0008,0008) := "HOLOGIC, Inc."
 // - (0019,{HOLOGIC, Inc.}X@)/(0001,0022)
 // - (0020,9222)/(0020,XXX#)
@@ -247,7 +243,10 @@ project != "Unassigned" ? (0008,1030) := project
 // shiftDateTimeSequenceByIncrement[ "1220400", "(5200,9230)/(0020,9111)/(0018,9151)"]
 // (0008,0018) := hashUID['aaa']
 // (0008,002A) := shiftDateTimeByIncrement[ (0008,002A), "1220400"]
-// alterPixels["rectangle", "l=100, t=100, r=200, b=200", "solid", "v=100"]
+`;
+
+const script2 = `version "6.3"
+(0008,1030) := "afzfZ"
 `;
 
 // const script = `Version 6.3
@@ -289,23 +288,43 @@ project != "Unassigned" ? (0008,1030) := project
     // fs.writeFileSync('/Users/woonchan/Desktop/res.dcm', new Uint8Array(buffer));
     const parser = Parser.generateParser();
     const ruleGroup3 = parser.parse(script, { trace: true });
-    console.log(ruleGroup3.rules[0]);
+    console.log(ruleGroup3.rules[0].statement);
 
-    const anonymizer = new Anonymizer(ruleGroup3, {
+    let anonymizer = new Anonymizer(ruleGroup3, {
       identifiers: { chany: 'aaa2332', project: 'Unassigned' },
       lookupMap: { 'pid/NOID': 'fsdafsd' },
     });
-    const filename = process.argv[2] || '/Users/woonchan/Desktop/res.dcm';
+
+    const filename =
+      process.argv[2] ||
+      //   '/Users/woonchan/Documents/sample/scans/73200000-MG1_R CC Breast Tomosynthesis Image/secondary/1.2.840.113654.2.45.6243.119412621788088078345724757077254776278-73200000-117-11bjar2.dcm';
+      //   '/Users/woonchan/Desktop/sample-tomo.dcm';
+      '/Users/woonchan/Desktop/TS_Set/MR-MONO2-12-shoulder';
     const buffer2 = fs.readFileSync(filename);
+
     anonymizer.loadDcm(buffer2);
-    // console.log(anonymizer.privateTagMap);
+    console.log(anonymizer.inputDict.dict['7FE00010']);
     await anonymizer.applyRules();
-    // console.log('result', anonymizer.ruleResult.results);
+    // const ssi = new Uint8Array(anonymizer.outputDict.dict['7FE00010'].Value[0]);
+    // console.log(ssi.filter((p) => p).length);
+    // console.log(anonymizer.inputDict === anonymizer.outputDict);
     const buffer = anonymizer.write();
+
+    // const dicomDict = DicomMessage.readFile(buffer2.buffer);
+    // const pixelModifier = new PixelModifier(dicomDict);
+    // pixelModifier.draw('rectangle', { left: 0, top: 0, right: 1500, bottom: 1500 });
+    // const buffer = dicomDict.write();
+    // const ssi = new Uint8Array(dicomDict.dict['7FE00010'].Value[0]);
+    // console.log(pixelModifier.getSizeOfImage());
+    // console.log(ssi.filter((p) => p).length);
+
     fs.writeFileSync('/Users/woonchan/Desktop/res.dcm', new Uint8Array(buffer));
-    console.log(anonymizer.identifiers);
+    // console.log(anonymizer.identifiers);
     // console.log(anonymizer.match(new TagLiteral('0019{HOLOGIC, Inc.}X@')));
     // console.log(anonymizer.match(new TagLiteral('00190010')));
+
+    // console.log(anonymizer.inputDict.dict['7FE00010']);
+    // console.log(loader);
   } catch (err) {
     console.log(err);
   }

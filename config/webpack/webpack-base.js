@@ -60,4 +60,7 @@ module.exports = {
     ],
   },
   plugins: [bannerPlugin()],
+  resolve: {
+    fallback: { path: false },
+  },
 };

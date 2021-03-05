@@ -29,7 +29,7 @@ import { RuleResult } from './RuleResult';
 import TagLiteral from './TagLiteral';
 
 const log = debug(`${APP_NAME}:Anonymizer`);
-const { DicomMessage, DicomDict } = dcmjs.data;
+const { DicomMessage, DicomDict, PixelModifier } = dcmjs.data;
 
 /**
  * Main Class for the DICOM anonymization work
@@ -58,27 +58,17 @@ export default class Anonymizer {
       trace: false,
     }
   ) {
-    const {
-      identifiers,
-      lookupMap,
-      inputBuffer,
-      trace,
-      parserLibrary,
-    } = options;
+    const { identifiers, lookupMap, inputBuffer, trace, parserLibrary } = options;
     // Validate script or ruleGroup
     if (!scriptOrRuleGroup) {
-      throw new IllegalArgumentsError(
-        'DicomEdit script or the rule group definition is required'
-      );
+      throw new IllegalArgumentsError('DicomEdit script or the rule group definition is required');
     }
     if (
       typeof scriptOrRuleGroup !== 'string' &&
       !(scriptOrRuleGroup instanceof RuleGroup) &&
       !Array.isArray(scriptOrRuleGroup)
     ) {
-      throw new IllegalArgumentsError(
-        'DicomEdit script or the rule group definition is required'
-      );
+      throw new IllegalArgumentsError('DicomEdit script or the rule group definition is required');
     }
 
     // Validate Identifiers
@@ -89,9 +79,7 @@ export default class Anonymizer {
     this.initialIdentifiers = identifiers || {};
     Object.keys(this.initialIdentifiers).forEach((identifier) => {
       if (!validateIdentifierConvention(identifier)) {
-        throw new IllegalArgumentsError(
-          `identifier name is not valid: ${identifier}`
-        );
+        throw new IllegalArgumentsError(`identifier name is not valid: ${identifier}`);
       }
     });
 
@@ -141,17 +129,12 @@ export default class Anonymizer {
    * @param {boolean} options.ignoreErrors - True if you want to disregard errors that happens inside dcmjs library while loading a DICOM object.
    */
   loadDcm(inputBuffer, options = { ignoreErrors: true }) {
-    if (
-      !(inputBuffer instanceof ArrayBuffer) &&
-      !(inputBuffer instanceof Uint8Array)
-    ) {
+    if (!(inputBuffer instanceof ArrayBuffer) && !(inputBuffer instanceof Uint8Array)) {
       throw new IllegalArgumentsError(
         'InputBuffer should be a type of ArrayBuffer (or Buffer on Node.JS)'
       );
     }
-    log(
-      `Loading a DICOM object from the ${inputBuffer.byteLength} byte buffer`
-    );
+    log(`Loading a DICOM object from the ${inputBuffer.byteLength} byte buffer`);
     const dicomDict = DicomMessage.readFile(
       inputBuffer instanceof Uint8Array ? inputBuffer.buffer : inputBuffer,
       options
@@ -187,9 +170,7 @@ export default class Anonymizer {
 
   loadDcmUsingFileName(filename) {
     if (!fs) {
-      throw new EnvironmentError(
-        'This function is supported only on the Node.JS environment'
-      );
+      throw new EnvironmentError('This function is supported only on the Node.JS environment');
     }
     const arrayBuffer = fs.readFileSync(filename);
     this.loadDcm(arrayBuffer);
@@ -201,11 +182,7 @@ export default class Anonymizer {
     const { dict } = this.inputDict;
     Object.keys(dict).forEach((tagName) => {
       const tag = dict[tagName];
-      if (
-        TagLiteral.isPrivateTagHeader(tagName) &&
-        Array.isArray(tag.Value) &&
-        tag.Value.length
-      ) {
+      if (TagLiteral.isPrivateTagHeader(tagName) && Array.isArray(tag.Value) && tag.Value.length) {
         const key = tag.Value[0].trim();
         privateTagMap[key] = new TagLiteral(tagName);
       }
@@ -218,9 +195,7 @@ export default class Anonymizer {
    */
   async applyRules() {
     if (!(this.inputDict instanceof DicomDict)) {
-      throw new IllegalArgumentsError(
-        'Please load dcm buffer before applying rules'
-      );
+      throw new IllegalArgumentsError('Please load dcm buffer before applying rules');
     }
     this._initializeOutput();
 
@@ -251,10 +226,7 @@ export default class Anonymizer {
         await this.applyRule(rule);
         ruleResult.addResult(i, rule, RULE_RESULT_STATUSES.COMPLETED);
       } catch (err) {
-        if (
-          err instanceof RuleError &&
-          err.severiry !== RULE_RESULT_STATUSES.FATAL
-        ) {
+        if (err instanceof RuleError && err.severiry !== RULE_RESULT_STATUSES.FATAL) {
           ruleResult.addResult(i, rule, err.severiry, err);
         } else {
           throw err;
@@ -315,9 +287,7 @@ export default class Anonymizer {
         break;
 
       default:
-        throw new IllegalArgumentsError(
-          `The element type is not valid: ${element.type}`
-        );
+        throw new IllegalArgumentsError(`The element type is not valid: ${element.type}`);
     }
     return values;
   }
@@ -369,10 +339,7 @@ export default class Anonymizer {
         break;
 
       default:
-        throw new RuleError(
-          `the statement type is not valid: ${type}`,
-          RULE_RESULT_STATUSES.ERROR
-        );
+        throw new RuleError(`the statement type is not valid: ${type}`, RULE_RESULT_STATUSES.ERROR);
     }
   }
 
@@ -382,10 +349,7 @@ export default class Anonymizer {
     const { operand1, operand2, options } = statement;
 
     // The left operand of the ASSIGN Statement should be an Element object of a type of either TAG or IDENTIFIER.
-    if (
-      operand1.type !== ELEMENT_TYPES.TAG &&
-      operand1.type !== ELEMENT_TYPES.IDENTIFIER
-    ) {
+    if (operand1.type !== ELEMENT_TYPES.TAG && operand1.type !== ELEMENT_TYPES.IDENTIFIER) {
       throw new RuleError(
         'The left operand of the ASSIGN Statement should be an Element object of a type of either TAG or IDENTIFIER.',
         RULE_RESULT_STATUSES.ERROR
@@ -401,13 +365,7 @@ export default class Anonymizer {
     }
 
     if (operand1.type === ELEMENT_TYPES.TAG) {
-      this._setTag(
-        outputDict,
-        operand1.value,
-        values,
-        undefined,
-        options.runsIfExists
-      );
+      this._setTag(outputDict, operand1.value, values, undefined, options.runsIfExists);
     } else if (operand1.type === ELEMENT_TYPES.IDENTIFIER) {
       if (!validateIdentifierConvention(operand1.value)) {
         throw new RuleError(`Identifier name is not valid: ${operand1.value}`);
@@ -421,10 +379,7 @@ export default class Anonymizer {
     const { outputDict, identifiers } = this;
     const { operand1 } = statement;
 
-    if (
-      operand1.type !== ELEMENT_TYPES.TAG &&
-      operand1.type !== ELEMENT_TYPES.IDENTIFIER
-    ) {
+    if (operand1.type !== ELEMENT_TYPES.TAG && operand1.type !== ELEMENT_TYPES.IDENTIFIER) {
       throw new RuleError(
         'the left operand of the delete statement should be the type of either tag or identifier.',
         RULE_RESULT_STATUSES.ERROR
@@ -465,9 +420,7 @@ export default class Anonymizer {
   _getParentTags(dicomDict, tagPathTokens, runsIfExists) {
     log(`Retrieving parent tags of ${tagPathTokens}`);
     tagPathTokens =
-      typeof tagPathTokens === 'string'
-        ? tokenizeTagPath(tagPathTokens)
-        : tagPathTokens;
+      typeof tagPathTokens === 'string' ? tokenizeTagPath(tagPathTokens) : tagPathTokens;
     let nodes = [dicomDict.dict];
     for (let i = 0; i < tagPathTokens.length; ++i) {
       const token = tagPathTokens[i];
@@ -488,17 +441,13 @@ export default class Anonymizer {
 
   _getTagsWithPath(dicomDict, tagPathTokens) {
     tagPathTokens =
-      typeof tagPathTokens === 'string'
-        ? tokenizeTagPath(tagPathTokens)
-        : tagPathTokens;
+      typeof tagPathTokens === 'string' ? tokenizeTagPath(tagPathTokens) : tagPathTokens;
     let nodes = [dicomDict.dict];
 
     for (let i = 0; i < tagPathTokens.length; ++i) {
       const token = tagPathTokens[i];
 
-      const candidates = nodes.filter(
-        (node) => node[token] && typeof node[token] === 'object'
-      );
+      const candidates = nodes.filter((node) => node[token] && typeof node[token] === 'object');
       if (candidates.length === 0) {
         break;
       }
@@ -596,5 +545,31 @@ export default class Anonymizer {
     }
     const tagName = `${privateHeaderTag.group}${privateHeaderTag.headerNo}XX`;
     return this.matchKeys(new TagLiteral(tagName));
+  }
+
+  draw(shape, shapeParams) {
+    if (shape !== 'rectangle') {
+      throw new RuleError(`${shape} is not a supported shape.`);
+    }
+    const { l: left, t: top, r: right, b: bottom } = this.parseShapeParams(shapeParams);
+    const pixelModifier = new PixelModifier(this.outputDict);
+    pixelModifier.draw(shape, { left, top, right, bottom });
+  }
+
+  parseShapeParams(shapeParams) {
+    // shapeParams : l=100, t=100, r=200, b=200
+    const obj = {};
+    shapeParams
+      .split(',')
+      .map((token) => token.trim())
+      .filter((token) => !!token)
+      .forEach((item) => {
+        const pair = item.split('=').map((token) => token.trim());
+        if (pair.length !== 2) {
+          return;
+        }
+        obj[pair[0]] = parseInt(pair[1]);
+      });
+    return obj;
   }
 }
