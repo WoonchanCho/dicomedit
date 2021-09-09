@@ -1,20 +1,5 @@
 const expect = require('chai').expect;
-const {
-  Anonymizer,
-  RuleGroup,
-  Rule,
-  Statement,
-  Condition,
-  Element,
-  Expression,
-  Parser,
-  TagLiteral,
-  STATEMENT_TYPES,
-  CONDITION_TYPES,
-  ELEMENT_TYPES,
-  EXPRESSION_FUNCTIONS,
-  Errors,
-} = require('../dist/node/dicomedit');
+const { Anonymizer, RuleGroup, Errors } = require('../dist/node/dicomedit');
 
 const script = `Version 6.3
 temp := 'chany'
@@ -37,7 +22,7 @@ const ruleGroup = RuleGroup.fromObject({
 });
 
 describe('Anonymizer.js', function () {
-  let inputFile = '../examples/sample.dcm';
+  let inputFile = 'examples/sample.dcm';
 
   describe('Instantiating', function () {
     it('should throw error when a script or a rule group is not provided', function () {
@@ -116,7 +101,15 @@ describe('Anonymizer.js', function () {
   });
 
   describe('Applying rules', function () {
-    it('should ');
+    let anonymizer = undefined;
+    before(function () {
+      anonymizer = new Anonymizer(script);
+      anonymizer.loadDcmUsingFileName(inputFile);
+    });
+
+    it('should ', async function () {
+      await anonymizer.applyRules();
+    });
   });
 
   describe('Resolving values', function () {

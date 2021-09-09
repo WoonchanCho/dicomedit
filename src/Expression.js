@@ -32,6 +32,7 @@ export const EXPRESSION_FUNCTIONS = {
   echo: 'echo',
   describe: 'describe',
   alterPixels: 'alterPixels',
+  delete: 'delete',
 };
 
 export class Expression {
@@ -224,5 +225,10 @@ export class Expression {
   alterPixels(anonymizer, shape, shapeParams, fillPattern, fillPatternParams) {
     log('Altering pixels', shape, shapeParams, fillPattern, fillPatternParams);
     anonymizer.draw(shape, shapeParams);
+  }
+
+  delete(anonymizer, tagName) {
+    log('Running delete');
+    anonymizer.deleteTag(anonymizer.outputDict, tagName);
   }
 }
