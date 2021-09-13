@@ -222,8 +222,10 @@ const ruleGroup = new RuleGroup('6.3', [
 
 ruleGroup && ruleGroup2;
 const script = `version "6.3"
-project != "Unassigned" ? (0008,1030) := project
-alterPixels["rectangle", "l=0, t=0, r=1000, b=1000", "solid", "v=100"]
+// - (2050,0020)
+delete["(0099,0010)"]
+// project != "Unassigned" ? (0008,1030) := project
+// alterPixels["rectangle", "l=0, t=0, r=1000, b=1000", "solid", "v=100"]
 // - (0008,0008)
 // (0008,0008) := "HOLOGIC, Inc."
 // - (0019,{HOLOGIC, Inc.}X@)/(0001,0022)
@@ -288,7 +290,9 @@ const script2 = `version "6.3"
     // fs.writeFileSync('/Users/woonchan/Desktop/res.dcm', new Uint8Array(buffer));
     const parser = Parser.generateParser();
     const ruleGroup3 = parser.parse(script, { trace: true });
-    console.log(ruleGroup3.rules[0].statement);
+    // console.log(ruleGroup3.rules[0].statement.operand1.value);
+
+    // console.log(ruleGroup3.rules[0].statement);
 
     let anonymizer = new Anonymizer(ruleGroup3, {
       identifiers: { chany: 'aaa2332', project: 'Unassigned' },
@@ -303,7 +307,8 @@ const script2 = `version "6.3"
     const buffer2 = fs.readFileSync(filename);
 
     anonymizer.loadDcm(buffer2);
-    console.log(anonymizer.inputDict.dict['7FE00010']);
+    // console.log(anonymizer.inputDict.dict['7FE00010']);
+    // console.log(anonymizer.inputDict);
     await anonymizer.applyRules();
     // const ssi = new Uint8Array(anonymizer.outputDict.dict['7FE00010'].Value[0]);
     // console.log(ssi.filter((p) => p).length);

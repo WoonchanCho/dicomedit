@@ -1,26 +1,28 @@
 export namespace EXPRESSION_FUNCTIONS {
-    const concatenate: string;
-    const format: string;
-    const getURL: string;
-    const hashUID: string;
-    const ismatch: string;
-    const lookup: string;
-    const lowercase: string;
-    const mapReferencedUIDs: string;
-    const match: string;
-    const newUID: string;
-    const replace: string;
-    const retainPrivateTags: string;
-    const set: string;
-    const shiftDateByIncrement: string;
-    const shiftDateTimeByIncrement: string;
-    const shiftDateTimeSequenceByIncrement: string;
-    const substring: string;
-    const uppercase: string;
-    const removeAllPrivateTags: string;
-    const echo: string;
-    const describe: string;
-    const alterPixels: string;
+    export const concatenate: string;
+    export const format: string;
+    export const getURL: string;
+    export const hashUID: string;
+    export const ismatch: string;
+    export const lookup: string;
+    export const lowercase: string;
+    export const mapReferencedUIDs: string;
+    export const match: string;
+    export const newUID: string;
+    export const replace: string;
+    export const retainPrivateTags: string;
+    export const set: string;
+    export const shiftDateByIncrement: string;
+    export const shiftDateTimeByIncrement: string;
+    export const shiftDateTimeSequenceByIncrement: string;
+    export const substring: string;
+    export const uppercase: string;
+    export const removeAllPrivateTags: string;
+    export const echo: string;
+    export const describe: string;
+    export const alterPixels: string;
+    const _delete: string;
+    export { _delete as delete };
 }
 export class Expression {
     static fromObject(raw: any): Expression;
@@ -55,4 +57,5 @@ export class Expression {
      * @param {*} fillPatternParams
      */
     alterPixels(anonymizer: any, shape: any, shapeParams: any, fillPattern: any, fillPatternParams: any): void;
+    delete(anonymizer: any, tagName: any): void;
 }

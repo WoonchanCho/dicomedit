@@ -1,5 +1,5 @@
 import { TAG_TYPES } from './Common/Constant';
-import { IllegalArgumentsError } from './Error';
+// import { IllegalArgumentsError } from './Error';
 const WILDCARD_REGEX = /[x@#]/i;
 const PRIVATE_TAG_MEMBER_REGEX = /^([0-9a-f]{4}){(.+)}([0-9a-fx@#]{2})$/i;
 export default class TagLiteral {
@@ -13,8 +13,7 @@ export default class TagLiteral {
     const group = parseInt(tagName.substring(0, 4), 16);
     return (
       group % 2 == 1 &&
-      (PRIVATE_TAG_MEMBER_REGEX.test(tagName) ||
-        parseInt(tagName.substring(4), 16) >= 0x100)
+      (PRIVATE_TAG_MEMBER_REGEX.test(tagName) || parseInt(tagName.substring(4), 16) >= 0x100)
     );
   }
 
@@ -38,8 +37,13 @@ export default class TagLiteral {
     } else if (TagLiteral.isPrivateTagMember(tagName)) {
       this.type = TAG_TYPES.PRIVATE_MEMBER;
       const reg = PRIVATE_TAG_MEMBER_REGEX.exec(tagName);
-      this.groupName = reg[2];
-      this.elementNo = reg[3];
+      if (reg) {
+        this.groupName = reg[2];
+        this.elementNo = reg[3];
+      } else {
+        this.groupName = tagName.substring(0, 4);
+        this.elementNo = tagName.substring(4);
+      }
     } else {
       this.type = TAG_TYPES.PUBLIC;
       this.element = tagName.substring(5);
@@ -49,35 +53,33 @@ export default class TagLiteral {
   hasWildcard() {
     switch (this.type) {
       case TAG_TYPES.PRIVATE_HEADER:
-        return (
-          WILDCARD_REGEX.test(this.group) || WILDCARD_REGEX.test(this.headerNo)
-        );
+        return WILDCARD_REGEX.test(this.group) || WILDCARD_REGEX.test(this.headerNo);
       case TAG_TYPES.PRIVATE_MEMBER:
-        return (
-          WILDCARD_REGEX.test(this.group) || WILDCARD_REGEX.test(this.elementNo)
-        );
+        return WILDCARD_REGEX.test(this.group) || WILDCARD_REGEX.test(this.elementNo);
       case TAG_TYPES.PUBLIC:
-        return (
-          WILDCARD_REGEX.test(this.group) || WILDCARD_REGEX.test(this.element)
-        );
+        return WILDCARD_REGEX.test(this.group) || WILDCARD_REGEX.test(this.element);
     }
   }
 
   getRegExp(privateTagMap = undefined) {
     let str = this.rawTagName;
     if (this.type === TAG_TYPES.PRIVATE_MEMBER) {
-      if (!privateTagMap) {
-        throw new IllegalArgumentsError(
-          'privateTagMap is required to resolve a private member tag'
-        );
+      //   if (!privateTagMap) {
+      //     throw new IllegalArgumentsError(
+      //       'privateTagMap is required to resolve a private member tag'
+      //     );
+      //   }
+      //   const privateTagHeader = privateTagMap[this.groupName];
+      //   if (!privateTagHeader) {
+      //     throw new IllegalArgumentsError(`The Private Creator ${this.groupName} is not found`);
+      //   }
+      //   str = `${this.group}${privateTagHeader.headerNo}${this.elementNo}`;
+      if (privateTagMap) {
+        const privateTagHeader = privateTagMap[this.groupName];
+        if (privateTagHeader) {
+          str = `${this.group}${privateTagHeader.headerNo}${this.elementNo}`;
+        }
       }
-      const privateTagHeader = privateTagMap[this.groupName];
-      if (!privateTagHeader) {
-        throw new IllegalArgumentsError(
-          `The Private Creator ${this.groupName} is not found`
-        );
-      }
-      str = `${this.group}${privateTagHeader.headerNo}${this.elementNo}`;
     }
 
     let regex = '';
