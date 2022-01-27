@@ -35,8 +35,8 @@ export default class DE6ParserListener {
     exitTermlist(ctx: any): void;
     enterMethod(ctx: any): void;
     exitMethod(ctx: any): void;
-    enterDe_function(ctx: any): void;
-    exitDe_function(ctx: any): void;
+    enterFunction_stmt(ctx: any): void;
+    exitFunction_stmt(ctx: any): void;
     enterDeletion(ctx: any): void;
     exitDeletion(ctx: any): void;
     enterEcho(ctx: any): void;
@@ -57,8 +57,8 @@ export default class DE6ParserListener {
     exitDescribeConstantVariable(ctx: any): void;
     enterDescribeImmutableVariable(ctx: any): void;
     exitDescribeImmutableVariable(ctx: any): void;
-    enterDe_export(ctx: any): void;
-    exitDe_export(ctx: any): void;
+    enterExport_stmt(ctx: any): void;
+    exitExport_stmt(ctx: any): void;
     enterRemoveAllPrivateTags(ctx: any): void;
     exitRemoveAllPrivateTags(ctx: any): void;
     enterVersion(ctx: any): void;

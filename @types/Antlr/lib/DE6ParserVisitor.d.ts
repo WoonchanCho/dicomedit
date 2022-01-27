@@ -17,7 +17,7 @@ export default class DE6ParserVisitor {
     visitFloatvalue(ctx: any): any;
     visitTermlist(ctx: any): any;
     visitMethod(ctx: any): any;
-    visitDe_function(ctx: any): any;
+    visitFunction_stmt(ctx: any): any;
     visitDeletion(ctx: any): any;
     visitEcho(ctx: any): any;
     visitConditional_statement(ctx: any): any;
@@ -28,7 +28,7 @@ export default class DE6ParserVisitor {
     visitDescribeHiddenVariable(ctx: any): any;
     visitDescribeConstantVariable(ctx: any): any;
     visitDescribeImmutableVariable(ctx: any): any;
-    visitDe_export(ctx: any): any;
+    visitExport_stmt(ctx: any): any;
     visitRemoveAllPrivateTags(ctx: any): any;
     visitVersion(ctx: any): any;
     visitTag(ctx: any): any;

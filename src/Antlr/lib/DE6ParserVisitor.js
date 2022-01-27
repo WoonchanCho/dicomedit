@@ -114,8 +114,8 @@ export default class DE6ParserVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by DE6Parser#de_function.
-	visitDe_function(ctx) {
+	// Visit a parse tree produced by DE6Parser#function_stmt.
+	visitFunction_stmt(ctx) {
 	  return this.visitChildren(ctx);
 	}
 
@@ -180,8 +180,8 @@ export default class DE6ParserVisitor extends antlr4.tree.ParseTreeVisitor {
 	}
 
 
-	// Visit a parse tree produced by DE6Parser#de_export.
-	visitDe_export(ctx) {
+	// Visit a parse tree produced by DE6Parser#export_stmt.
+	visitExport_stmt(ctx) {
 	  return this.visitChildren(ctx);
 	}
 

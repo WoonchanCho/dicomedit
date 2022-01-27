@@ -167,12 +167,12 @@ export default class DE6ParserListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by DE6Parser#de_function.
-	enterDe_function(ctx) {
+	// Enter a parse tree produced by DE6Parser#function_stmt.
+	enterFunction_stmt(ctx) {
 	}
 
-	// Exit a parse tree produced by DE6Parser#de_function.
-	exitDe_function(ctx) {
+	// Exit a parse tree produced by DE6Parser#function_stmt.
+	exitFunction_stmt(ctx) {
 	}
 
 
@@ -266,12 +266,12 @@ export default class DE6ParserListener extends antlr4.tree.ParseTreeListener {
 	}
 
 
-	// Enter a parse tree produced by DE6Parser#de_export.
-	enterDe_export(ctx) {
+	// Enter a parse tree produced by DE6Parser#export_stmt.
+	enterExport_stmt(ctx) {
 	}
 
-	// Exit a parse tree produced by DE6Parser#de_export.
-	exitDe_export(ctx) {
+	// Exit a parse tree produced by DE6Parser#export_stmt.
+	exitExport_stmt(ctx) {
 	}
 
 

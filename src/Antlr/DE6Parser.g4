@@ -15,10 +15,8 @@ statement
 	:	action
 //	|	constraint action
 	|	conditional_statement
-	|   method
-	|	initialization
 	|	description
-	|	de_export
+	|	export_stmt
 	|	removeAllPrivateTags
 	|	version
 	;
@@ -28,6 +26,7 @@ action
 	|	assign_if_exists
 	|	deletion
 	|	initialization
+	|   method
 	|	echo
     ;
 
@@ -51,11 +50,11 @@ value	:	term
 	;
 
 term
-	:	number      # numberTerm
-    |	STRING      # stringTerm
-	|	tagpath     # tagPathTerm
-	|	de_function # functionTerm
-	|	variable    # idTerm
+	:	number         # numberTerm
+    |	STRING         # stringTerm
+	|	tagpath        # tagPathTerm
+	|	function_stmt  # functionTerm
+	|	variable       # idTerm
 	;
 
 variable : ID ;
@@ -72,7 +71,7 @@ method
     : ID '[' termlist? ']'
     ;
 
-de_function
+function_stmt
     : ID '[' termlist? ']'
     ;
 
@@ -105,7 +104,7 @@ description
 	|	DESCRIBE ID IMMUTABLE_TOKEN  # describeImmutableVariable
 	;
 
-de_export : EXPORT ID STRING ;
+export_stmt : EXPORT ID STRING ;
 
 removeAllPrivateTags : REMOVE_ALL_PRIVATE_TAGS ;
 

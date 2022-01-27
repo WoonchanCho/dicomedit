@@ -23,7 +23,7 @@ declare class DE6Parser {
     number(): NumberContext;
     termlist(): TermlistContext;
     method(): MethodContext;
-    de_function(): De_functionContext;
+    function_stmt(): Function_stmtContext;
     deletion(): DeletionContext;
     echo(): EchoContext;
     conditional_statement(): Conditional_statementContext;
@@ -31,7 +31,7 @@ declare class DE6Parser {
     conditionOperator(): ConditionOperatorContext;
     initialization(): InitializationContext;
     description(): DescriptionContext;
-    de_export(): De_exportContext;
+    export_stmt(): Export_stmtContext;
     removeAllPrivateTags(): RemoveAllPrivateTagsContext;
     version(): VersionContext;
     tag(): TagContext;
@@ -96,7 +96,7 @@ declare namespace DE6Parser {
     export const RULE_number: number;
     export const RULE_termlist: number;
     export const RULE_method: number;
-    export const RULE_de_function: number;
+    export const RULE_function_stmt: number;
     export const RULE_deletion: number;
     export const RULE_echo: number;
     export const RULE_conditional_statement: number;
@@ -104,7 +104,7 @@ declare namespace DE6Parser {
     export const RULE_conditionOperator: number;
     export const RULE_initialization: number;
     export const RULE_description: number;
-    export const RULE_de_export: number;
+    export const RULE_export_stmt: number;
     export const RULE_removeAllPrivateTags: number;
     export const RULE_version: number;
     export const RULE_tag: number;
@@ -140,7 +140,7 @@ declare namespace DE6Parser {
     export { NumberContext };
     export { TermlistContext };
     export { MethodContext };
-    export { De_functionContext };
+    export { Function_stmtContext };
     export { DeletionContext };
     export { EchoContext };
     export { Conditional_statementContext };
@@ -148,7 +148,7 @@ declare namespace DE6Parser {
     export { ConditionOperatorContext };
     export { InitializationContext };
     export { DescriptionContext };
-    export { De_exportContext };
+    export { Export_stmtContext };
     export { RemoveAllPrivateTagsContext };
     export { VersionContext };
     export { TagContext };
@@ -188,10 +188,8 @@ declare class StatementContext {
     ruleIndex: number;
     action(): any;
     conditional_statement(): any;
-    method(): any;
-    initialization(): any;
     description(): any;
-    de_export(): any;
+    export_stmt(): any;
     removeAllPrivateTags(): any;
     version(): any;
     enterRule(listener: any): void;
@@ -206,6 +204,7 @@ declare class ActionContext {
     assign_if_exists(): any;
     deletion(): any;
     initialization(): any;
+    method(): any;
     echo(): any;
     enterRule(listener: any): void;
     exitRule(listener: any): void;
@@ -291,7 +290,7 @@ declare class MethodContext {
     exitRule(listener: any): void;
     accept(visitor: any): any;
 }
-declare class De_functionContext {
+declare class Function_stmtContext {
     constructor(parser: any, parent: any, invokingState: any);
     parser: any;
     ruleIndex: number;
@@ -374,7 +373,7 @@ declare class DescriptionContext {
     ruleIndex: number;
     copyFrom(ctx: any): void;
 }
-declare class De_exportContext {
+declare class Export_stmtContext {
     constructor(parser: any, parent: any, invokingState: any);
     parser: any;
     ruleIndex: number;
@@ -526,7 +525,7 @@ declare class NumberTermContext extends TermContext {
 }
 declare class FunctionTermContext extends TermContext {
     constructor(parser: any, ctx: any);
-    de_function(): any;
+    function_stmt(): any;
     enterRule(listener: any): void;
     exitRule(listener: any): void;
     accept(visitor: any): any;

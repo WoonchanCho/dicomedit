@@ -8,8 +8,8 @@ export default class TagLiteral {
     rawTagName: any;
     type: string;
     headerNo: any;
-    groupName: string;
-    elementNo: string;
+    groupName: any;
+    elementNo: any;
     element: any;
     hasWildcard(): boolean;
     getRegExp(privateTagMap?: any): RegExp;
