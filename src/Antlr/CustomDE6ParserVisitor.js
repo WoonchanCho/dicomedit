@@ -60,11 +60,7 @@ export default class CustomDE6ParserVisitor extends DE6ParserVisitor {
     log(`Set variable: name= ${id}, value= ${element}`);
 
     return new Rule(
-      new Statement(
-        STATEMENT_TYPES.ASSIGN,
-        new Element(ELEMENT_TYPES.IDENTIFIER, id),
-        element
-      )
+      new Statement(STATEMENT_TYPES.ASSIGN, new Element(ELEMENT_TYPES.IDENTIFIER, id), element)
     );
   }
 
@@ -90,11 +86,7 @@ export default class CustomDE6ParserVisitor extends DE6ParserVisitor {
     const tagPath = lvalue[0];
 
     return new Rule(
-      new Statement(
-        STATEMENT_TYPES.ASSIGN,
-        new Element(ELEMENT_TYPES.TAG, tagPath),
-        assignedValue
-      )
+      new Statement(STATEMENT_TYPES.ASSIGN, new Element(ELEMENT_TYPES.TAG, tagPath), assignedValue)
     );
   }
 
@@ -180,23 +172,17 @@ export default class CustomDE6ParserVisitor extends DE6ParserVisitor {
     return new Rule(
       new Statement(
         STATEMENT_TYPES.PROCEDURE,
-        new Element(
-          ELEMENT_TYPES.EXPRESSION,
-          new Expression(functionName, ...termlist)
-        )
+        new Element(ELEMENT_TYPES.EXPRESSION, new Expression(functionName, ...termlist))
       )
     );
   }
 
   visitFunctionTerm(ctx) {
     log(`Encountered function term: ${ctx.getText()}`);
-    const functionName = ctx.de_function().ID().getText();
-    const termlist = this.visit(ctx.de_function().termlist());
+    const functionName = ctx.function_stmt().ID().getText();
+    const termlist = this.visit(ctx.function_stmt().termlist());
 
-    return new Element(
-      ELEMENT_TYPES.EXPRESSION,
-      new Expression(functionName, ...termlist)
-    );
+    return new Element(ELEMENT_TYPES.EXPRESSION, new Expression(functionName, ...termlist));
   }
 
   visitTermlist(ctx) {
@@ -239,12 +225,7 @@ export default class CustomDE6ParserVisitor extends DE6ParserVisitor {
     const lvalue = this.visit(ctx.lvalue());
     const tagPath = lvalue[0];
 
-    return new Rule(
-      new Statement(
-        STATEMENT_TYPES.DELETE,
-        new Element(ELEMENT_TYPES.TAG, tagPath)
-      )
-    );
+    return new Rule(new Statement(STATEMENT_TYPES.DELETE, new Element(ELEMENT_TYPES.TAG, tagPath)));
   }
 
   visitRemoveAllPrivateTags() {
@@ -267,11 +248,7 @@ export default class CustomDE6ParserVisitor extends DE6ParserVisitor {
       alternate = this.visit(ctx.action(1))[0];
     }
 
-    return new Rule(
-      consequent.statement,
-      condition,
-      alternate ? alternate.statement : undefined
-    );
+    return new Rule(consequent.statement, condition, alternate ? alternate.statement : undefined);
   }
 
   visitCondition(ctx) {
@@ -288,10 +265,7 @@ export default class CustomDE6ParserVisitor extends DE6ParserVisitor {
     return new Rule(
       new Statement(
         STATEMENT_TYPES.PROCEDURE,
-        new Element(
-          ELEMENT_TYPES.EXPRESSION,
-          new Expression(EXPRESSION_FUNCTIONS.echo, value)
-        )
+        new Element(ELEMENT_TYPES.EXPRESSION, new Expression(EXPRESSION_FUNCTIONS.echo, value))
       )
     );
   }
