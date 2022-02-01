@@ -183,7 +183,9 @@ export default class Anonymizer {
     Object.keys(dict).forEach((tagName) => {
       const tag = dict[tagName];
       if (TagLiteral.isPrivateTagHeader(tagName) && Array.isArray(tag.Value) && tag.Value.length) {
-        const key = tag.Value[0].trim();
+        const value = tag.Value[0];
+        const key = value.trim ? value.trim() : value;
+        // const key = tag.Value[0].trim();
         privateTagMap[key] = new TagLiteral(tagName);
       }
     });
